@@ -19,7 +19,9 @@ class User(models.Model):
 		('1', '削除')
 	)
 	delete_flag = models.IntegerField(choices=DELETE_FLAG_CHOICES)
-
+	def __str__(self):
+		return self.user_name
+			
 class Equipment(models.Model):
 	eq_id = models.AutoField(primary_key=True, unique=True)
 	owner_user = models.ForeignKey(User)

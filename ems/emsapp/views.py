@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from . account import Account
+from . models import User
 # Create your views here.
 
 #login画面
@@ -62,11 +63,19 @@ def user_comp(request):
 	account.create_user(name, password, authority)
 	return render(request, 'comp.html')
 #備品検索画面
+
 def eq_search(request):
 	try:
 		if request.session['user_name']:
-			return render(request,'eq_search.html',{
-				'userlist':request.session['user_name']})
+			if request.session['user_authority'] == 1:
+				return render(request,'eq_search.html',{
+						'userlist': User.objects.get(user_name = request.session['user_name'])
+					})
+			else:
+				return render(request,'eq_search.html',{
+					'userlist': User.objects.all()
+					})
+
 	except (KeyError):
 		return render(request, 'error.html', {
 				'page' : 'index'
