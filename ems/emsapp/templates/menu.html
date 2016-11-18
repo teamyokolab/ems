@@ -6,8 +6,8 @@
 <a href="">備品登録</a>
 <a href="">備品データ更新</a>
 <a href="{%url 'eq_search'%}">備品検索</a>
-<a href="">備品廃棄</a>
-<a href="">廃棄備品復元</a>
+<a href="{%url 'disposal_search'%}">備品廃棄</a>
+<a href="{%url 'restore_search'%}">廃棄備品復元</a>
 {% ifequal authority 2 %}
 <a href="">CSV入力</a>
 <a href="">CSV出力</a>

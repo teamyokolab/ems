@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from . models import User
-
+from django.db.models import Q
 class Account:
 	#login認証処理	
 	def login(self, name, password):
@@ -24,3 +24,11 @@ class Account:
 	def create_user(self, name, password, authority):
 		user = User(user_name=name, user_password=password, user_authority=authority, delete_flag=0)
 		user.save()
+
+	# user_list を返す関数
+	def get_user_list(authority, name):
+		if authority == 2:
+			users = User.objects.filter(Q(user_authority=1)| Q(user_authority=2))
+		if authority == 1:
+			users = User.objects.filter(user_name=name)
+		return users
