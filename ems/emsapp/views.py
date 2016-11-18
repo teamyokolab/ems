@@ -2,6 +2,7 @@ from django.shortcuts import render
 from . account import Account
 from . models import User
 from django.db.models import Q
+from . models import Equipment
 # Create your views here.
 
 #login画面
@@ -52,11 +53,11 @@ def menu(request):
 			})
 
 #ユーザ登録画面
-def create(request):
-	return render(request, 'user_create.html')
+def user_regist(request):
+	return render(request, 'user_regist.html')
 
 #ユーザ登録完了画面
-def user_comp(request):
+def user_regist_comp(request):
 	name = request.POST['user_name']
 	password = request.POST['user_password']
 	authority = request.POST['authority']
@@ -64,6 +65,22 @@ def user_comp(request):
 	account.create_user(name, password, authority)
 	return render(request, 'comp.html')
 
+#備品登録画面
+def eq_regist(request):
+	try:
+		if request.session['user_name']:
+			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+			return render(request,'eq_regist.html',{
+				'user_list': users
+			})
+	except (KeyError):
+			return render(request, 'error.html', {
+				'page' : 'index'
+			})
+
+#備品登録完了画面
+def eq_regist_comp(request):
+	return render(request, 'comp.html')
 
 #備品検索画面
 def eq_search(request):
@@ -82,11 +99,11 @@ def eq_list(request):
 	return render(request,'eq_list.html')
 
 #備品廃棄用検索画面
-def disposal_search(request):
+def eq_disposal_search(request):
 	try:
 		if request.session['user_name']:
 			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
-			return render(request,'disposal_search.html',{
+			return render(request,'eq_disposal_search.html',{
 					'user_list': users
 				})
 	except (KeyError):
@@ -98,11 +115,11 @@ def eq_disposal(request):
 	return render(request,'eq_disposal.html')
 
 #備品復元用検索画面
-def restore_search(request):
+def eq_restore_search(request):
 	try:
 		if request.session['user_name']:
 			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
-			return render(request,'restore_search.html',{
+			return render(request,'eq_restore_search.html',{
 					'user_list': users
 					})
 	except (KeyError):
