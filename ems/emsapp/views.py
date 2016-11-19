@@ -124,7 +124,8 @@ def eq_regist_comp(request):
 	month = request.POST['month']
 	day = request.POST['day']
 	pur_date = year+'-'+month+'-'+day
-	owner_id = Account.get_user(owner)
+	account = Account()
+	owner_id = account.get_user(owner)
 	EditEquipment.regist_equipment(name, owner_id, category, pur_date)
 	return render(request, 'comp.html')	
 
