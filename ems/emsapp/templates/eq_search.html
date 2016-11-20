@@ -1,4 +1,7 @@
 <html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
 <body>
 <form action="{% url 'eq_list' %}" method="POST">
 {% csrf_token %}
@@ -23,8 +26,10 @@
 
 
 <br />
-登録日 <input type="button" value="入力する" onclick="myEnter(1)">
-<!--<input type="checkbox" name="flag1" value="1" onclick="myEnter(1)">-->
+登録日 <input type="button" name="regist_date" value = "入力する" id = 'p_exist'>
+<input type="button" name="regist_nodate" value = "入力を取り消す" id = 'p_noexist'>
+
+
 <select name="pur_year" id="id_year">
 </select>
 年
@@ -32,8 +37,9 @@
 </select>
 月
 <br />
-廃棄日 <input type="button" value="入力する" onclick="myEnter(2)">
-<!-- <input type="checkbox" name="flag2" value="2" onclick="myEnter(2)"> -->
+廃棄日 
+<input type="button" name="disposal_date" value = "入力する" id = 'd_exist'>
+<input type="button" name="disposal_nodate" value = "入力を取り消す" id = 'd_noexist'>
 <select name="dip_year" id="id2_year">
 </select>
 年
@@ -52,18 +58,36 @@
 <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
 <script>
 
-function myEnter(flag){
-   myRet = confirm("日付の入力をしますか？");
-   if ( myRet == true ){
-     if (flag == 1){
-          optionLoop(1950, this_year, 'id_year', this_year);
-          optionLoop(1, 12, 'id_month', this_month);	
-      } else {
-          optionLoop(1950, this_year, 'id2_year', this_year);
-          optionLoop(1, 12, 'id2_month', this_month);		
-      }
-   }
+$('#p_exist').on('click',  function(e){
+	myEnter(1);
+});
+
+$('#p_noexist').on('click',  function(e){
+	$("#id_year").empty();
+	$("#id_month").empty();
+});
+
+$('#d_exist').on('click',  function(e){
+		    myEnter(2);
+});
+
+$('#d_noexist').on('click',  function(e){
+	$("#id2_year").empty();
+	$("#id2_month").empty();
+});
+function myEnter(flag) {
+  myRet = confirm("日付の入力をしますか？");
+  if ( myRet == true ){
+    if (flag == 1){
+      optionLoop(1950, this_year, 'id_year', this_year);
+	  optionLoop(1, 12, 'id_month', this_month);    
+    } else {
+	  optionLoop(1950, this_year, 'id2_year', this_year);
+	  optionLoop(1, 12, 'id2_month', this_month);       
+    }
+  }
 }
+
 </script>
 </body>
 </html>
