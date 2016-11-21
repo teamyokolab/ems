@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1>{{result}}</h1>
+<h1>権限{{authority}}</h1>
 <h1>一般ユーザメニュー</h1>
 <a href="">備品一覧</a>
 <a href="">備品登録</a>
@@ -8,7 +8,9 @@
 <a href="">備品検索</a>
 <a href="">備品廃棄</a>
 <a href="">廃棄備品復元</a>
+{% ifequal authority 2 %}
 <a href="">CSV入力</a>
 <a href="">CSV出力</a>
+{% endifequal %}
 </body>
 </html>
