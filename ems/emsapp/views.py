@@ -64,3 +64,8 @@ def user_comp(request):
 
 def eq_search(request):
 	return render(request,'eq_search.html')
+
+def logout(request):
+	del request.session['user_name']
+	del request.session['user_authority']
+	return render(request, 'login.html')
