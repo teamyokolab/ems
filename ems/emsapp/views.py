@@ -71,7 +71,9 @@ def eq_search(request):
 		return render(request, 'error.html', {
 				'page' : 'index'
 				})
-	
+#備品検索結果画面
+def eq_list(request):
+	return render(request,'eq_list.html')
 
 
 def logout(request):
