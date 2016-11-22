@@ -1,13 +1,24 @@
 <html>
+<head>
+{%load static%}
+<link rel="stylesheet" href="{% static 'emsapp/css/reset.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'emsapp/css/login.css' %}" type="text/css">
+</head>
 <body>
-<form action="{% url 'menu' %}" method="post">
+
+<h1>EQUIPMENT MANAGEMENT SYSTEM</h1>
+
+<div class="login">
+  <div class="login-triangle"></div>
+  <h2 class="login-header">LOG IN</h2>
+
+<form action="{% url 'menu' %}" method="post" class="login-container">
 {% csrf_token %}
-ユーザネーム　　:　<input type="text" name="user_name">
-<br />
-パスワード　:　<input type="text" name="password">
-<br />
-<input type="submit" value="ログイン">
+<p><input type="text" name="user_name" placeholder="user_name"></p>
+<p><input type="text" name="password" placeholder="password"></p>
+<p><input type="submit" value="Login"></p>
 </form>
+</div>
 
 </body>
 </html>
