@@ -16,7 +16,9 @@
 <br />
 利用者
 <select name="">
-<option value="">{{userlist.user_name}}</option>
+{% for users in user_list %}
+<option value="">{{users.user_name}}</option>
+{% endfor %}
 </select>
 
 
