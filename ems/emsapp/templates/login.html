@@ -9,9 +9,7 @@
 <h1>EQUIPMENT MANAGEMENT SYSTEM</h1>
 
 <div class="login">
-  <div class="login-triangle"></div>
-  <h2 class="login-header">LOG IN</h2>
-
+<h2 class="login-header">login</h2>
 <form action="{% url 'menu' %}" method="post" class="login-container">
 {% csrf_token %}
 <p><input type="text" name="user_name" placeholder="user_name"></p>

@@ -2,7 +2,9 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
 body {
-  background: #585858;
+ /* background: #585858;*/
+  background-image: url("../img/back.jpg");
+  background-size: cover;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -37,24 +39,28 @@ h1 {
 }
 
 .login-header {
-  background: #28d;
+  background-color: rgba(34, 116, 183, 0.9);
   padding: 20px;
-  font-size: 1.4em;
+  font-size: 50px;
   font-weight: normal;
   text-align: center;
   text-transform: uppercase;
   color: #fff;
+  height: 50px;
 }
 
 .login-container {
-  background: #ebebeb;
+  background-color: rgba(180, 180, 180, 0.7);
   padding: 12px;
+  height: 330px;
 }
 
 /* Every row inside .login-container is defined with p tags */
 .login p {
-  padding: 12px;
+  padding: 18px;
+  margin-top: 5px;
 }
+
 
 .login input {
   box-sizing: border-box;
@@ -73,6 +79,7 @@ h1 {
   background: #fff;
   border-color: #bbb;
   color: #555;
+  margin-top: 20px;
 }
 
 /* Text fields' focus effect */
@@ -82,17 +89,18 @@ h1 {
 }
 
 .login input[type="submit"] {
-  background: #28d;
-  border-color: transparent;
+  background-color: rgba(180, 180, 180, 0.9);
   color: #fff;
   cursor: pointer;
+  font-size: 40px;
+  border: 0px;
 }
 
 .login input[type="submit"]:hover {
-  background: #17c;
+  background-color: rgba(200, 200, 200, 0.9);
 }
 
 /* Buttons' focus effect */
 .login input[type="submit"]:focus {
-  border-color: #05a;
+  border: solid 0px;
 }
