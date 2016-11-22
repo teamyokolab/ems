@@ -18,7 +18,7 @@ def menu(request):
 			return render(request, menu_path, {
 				'authority' : request.session['user_authority']
 			})
-	except (NameError):
+	except (KeyError):
 		try:
 			#フォームからの入力を保存
 			name = request.POST['user_name']
@@ -61,3 +61,6 @@ def user_comp(request):
 	account = Account()
 	account.create_user(name, password, authority)
 	return render(request, 'comp.html')
+
+def eq_search(request):
+	return render(request,'eq_search.html')
