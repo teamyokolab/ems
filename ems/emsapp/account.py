@@ -20,3 +20,7 @@ class Account:
 			return user
 		except ObjectDoesNotExist:
 			return False
+
+	def create_user(self, name, password, authority):
+		user = User(user_name=name, user_password=password, user_authority=authority, delete_flag=0)
+		user.save()
