@@ -20,5 +20,6 @@
 
 	optionLoop(1950, this_year, 'id_year', this_year);
   	optionLoop(1, 12, 'id_month', this_month);
+	optionLoop(1, 12, 'id_day', this_day);
  	optionLoop(1950, this_year, 'id2_year', this_year);
 	optionLoop(1, 12, 'id2_month', this_month);
