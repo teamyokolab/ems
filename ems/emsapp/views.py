@@ -64,28 +64,57 @@ def user_comp(request):
 	account.create_user(name, password, authority)
 	return render(request, 'comp.html')
 
+
 #備品検索画面
 def eq_search(request):
 	try:
 		if request.session['user_name']:
-			if request.session['user_authority'] == 2:
-				users = User.objects.filter(Q(user_authority=1)| Q(user_authority=2))
-			if request.session['user_authority'] == 1:
-				users = User.objects.filter(user_name=request.session['user_name'])
+			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
 			return render(request,'eq_search.html',{
 				'user_list': users
 			})
-
 	except (KeyError):
 		return render(request, 'error.html', {
 				'page' : 'index'
-		})
-
+				})
 #備品検索結果画面
 def eq_list(request):
 	return render(request,'eq_list.html')
 
+#備品廃棄用検索画面
+def disposal_search(request):
+	try:
+		if request.session['user_name']:
+			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+			return render(request,'disposal_search.html',{
+					'user_list': users
+				})
+	except (KeyError):
+			return render(request, 'error.html', {
+					'page' : 'index'
+				})
+#備品廃棄用検索結果表示
+def eq_disposal(request):
+	return render(request,'eq_disposal.html')
 
+#備品復元用検索画面
+def restore_search(request):
+	try:
+		if request.session['user_name']:
+			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+			return render(request,'restore_search.html',{
+					'user_list': users
+					})
+	except (KeyError):
+		return render(request, 'error.html', {
+			'page' : 'index'
+			})
+
+#備品復元用検索結果画面
+def eq_restore(request):
+	return render(request,'eq_restore.html')
+
+#ログアウト
 def logout(request):
 	del request.session['user_name']
 	del request.session['user_authority']
