@@ -1,44 +1,40 @@
-	<html>
-	<body>
-	<h1>備品登録</h1>
-	<form action="{% url 'eq_comp'%}" method="post">
-	{% csrf_token %}
-	物品名: <input type="text" name="eq_name"> <br />
-	物品種別<br />
-	<input type="radio" name="Equipment" value="PC">PC
-	<input type="radio" name="Equipment" value="周辺機器">周辺機器
-	<input type="radio" name="Equipment" value="ソフトウェア">ソフトウェア
-	<input type="radio" name="Equipment" value="事務用品">事務用品
-	<input type="radio" name="Equipment" value="電化製品">電化製品
-	<input type="radio" name="Equipment" value="家具">家具
-	<input type="radio" name="Equipment" value="書籍">書籍
-	<input type="radio" name="Equipment" value="消耗品">消耗品
-	<input type="radio" name="Equipment" value="その他" checked>その他
-	<br />
-	利用者
-	<select name="">
-	{% for users in user_list %}
-	<option value="">{{users.user_name}}</option>
-	{% endfor %}
-	</select>
-
-	<br />
-	登録日
-	<select name="year" id="id_year">
-	</select>
-	年
-	<select name="month" id="id_month">
-	</select>
-	月
-	<select name="day" id="id_day">
-	</select>
-	日
-	<br />
-<br />
-
-
-	<input type="submit" value="登録">
-{%load static%}
-<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
-	</body>
-	</html>
+<html>
+<body>
+  <h1>備品登録</h1>
+  <form action="{% url 'eq_comp'%}" method="post">
+  {% csrf_token %}
+  物品名: <input type="text" name="eq_name"> <br />
+  物品種別<br />
+  <input type="radio" name="category" value="PC">PC
+  <input type="radio" name="category" value="周辺機器">周辺機器
+  <input type="radio" name="category" value="ソフトウェア">ソフトウェア
+  <input type="radio" name="category" value="事務用品">事務用品
+  <input type="radio" name="category" value="電化製品">電化製品
+  <input type="radio" name="category" value="家具">家具
+  <input type="radio" name="category" value="書籍">書籍
+  <input type="radio" name="category" value="消耗品">消耗品
+  <input type="radio" name="category" value="その他" checked>その他
+  <br />
+  利用者
+  <select name="owner">
+  {% for users in user_list %}
+  <option value="{{users.user_name}}">{{users.user_name}}</option>
+  {% endfor %}
+  </select>
+  <br />
+  登録日
+  <select name="year" id="id_year"></select>年
+  <select name="month" id="id_month"></select>月
+  <select name="day" id="id_day"></select>日
+  <br />
+  <br />
+  <input type="submit" value="登録">
+  {%load static%}
+  <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+  <script>
+  optionLoop(2005,  this_year, 'id_year', this_year);
+  optionLoop(1, 12, 'id_month', this_month);
+  optionLoop(1, 31, 'id_day', this_day);
+  </script>
+</body>
+</html>
