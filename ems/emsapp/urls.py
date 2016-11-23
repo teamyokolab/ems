@@ -8,4 +8,6 @@ urlpatterns = [
 	url(r'user_comp/$', views.user_comp, name='user_comp'),
 	url(r'eq_search/$', views.eq_search, name='eq_search'),
 	url(r'logout/$', views.logout, name='logout'),
+	url(r'eq_list/$', views.eq_list, name='eq_list'),
+        
 ]

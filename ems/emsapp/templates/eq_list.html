@@ -3,8 +3,27 @@
 <form action=""method="POST">
 {% csrf_token %}
 備品検索結果画面
+<table border="1">
+  <tr>
+    <th>物品種別</th>
+    <th>物品名</th>
+    <th>利用者</th>
+    <th>購入日</th>
+    <th>廃棄日</th>
+  </tr>
 
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+   
+</table>
 
+<input type="button" value="OK" onclick="location.href='{% url 'menu'%}'">
+<input type="button" value="戻る" onclick="location.href='{%url 'eq_search'%}'">
 
 </body>
 </html>

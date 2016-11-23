@@ -1,6 +1,6 @@
 <html>
 <body>
-<form action="" method="POST">
+<form action="{% url 'eq_list' %}" method="POST">
 {% csrf_token %}
 備品検索情報入力画面<br />
 物品種別<br />
