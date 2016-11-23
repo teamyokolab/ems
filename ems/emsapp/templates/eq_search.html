@@ -2,17 +2,17 @@
 <body>
 <form action="{% url 'eq_list' %}" method="POST">
 {% csrf_token %}
-備品検索情報入力画面<br />
+廃棄備品検索情報入力画面<br />
 物品種別<br />
-<input type="radio" name="Equipment" value="">PC
-<input type="radio" name="Equipment" value="">周辺機器
-<input type="radio" name="Equipment" value="">ソフトウェア
-<input type="radio" name="Equipment" value="">事務用品
-<input type="radio" name="Equipment" value="">電化製品
-<input type="radio" name="Equipment" value="">家具
-<input type="radio" name="Equipment" value="">書籍
-<input type="radio" name="Equipment" value="">消耗品
-<input type="radio" name="Equipment" value="" checked>その他
+<input type="radio" name="Equipment" value="PC">PC
+<input type="radio" name="Equipment" value="周辺機器">周辺機器
+<input type="radio" name="Equipment" value="ソフトウェア">ソフトウェア
+<input type="radio" name="Equipment" value="事務用品">事務用品
+<input type="radio" name="Equipment" value="電化製品">電化製品
+<input type="radio" name="Equipment" value="家具">家具
+<input type="radio" name="Equipment" value="書籍">書籍
+<input type="radio" name="Equipment" value="消耗品">消耗品
+<input type="radio" name="Equipment" value="その他" checked>その他
 <br />
 利用者
 <select name="">
@@ -40,56 +40,13 @@
 
 <br />
 
-<script>
-(function() {
-  'use strict';
-
-  /*
-    今日の日付データを変数todayに格納
-   */
-  var optionLoop, this_day, this_month, this_year, today;
-  today = new Date();
-  this_year = today.getFullYear();
-  this_month = today.getMonth() + 1;
-  this_day = today.getDate();
-
-  /*
-    ループ処理（スタート数字、終了数字、表示id名、デフォルト数字）
-   */
-  optionLoop = function(start, end, id, this_day) {
-    var i, opt;
-
-    opt = null;
-    for (i = start; i <= end ; i++) {
-      if (i === this_day) {
-        opt += "<option value='" + i + "' selected>" + i + "</option>";
-      } else {
-        opt += "<option value='" + i + "'>" + i + "</option>";
-      }
-    }
-    return document.getElementById(id).innerHTML = opt;
-  };
-
-
-  /*
-    関数設定（スタート数字[必須]、終了数字[必須]、表示id名[省略可能]、デフォルト数字[省略可能]）
-   */
-  optionLoop(1950, this_year, 'id_year', this_year);
-  optionLoop(1, 12, 'id_month', this_month);
-  
-
-  optionLoop(1950, this_year, 'id2_year', this_year);
-  optionLoop(1, 12, 'id2_month', this_month);
-
-
-})();
-
-</script>
 
 
 <input type="submit" value="検索">
 
 </form>
+{%load static%}
+<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
 </body>
 </html>
 

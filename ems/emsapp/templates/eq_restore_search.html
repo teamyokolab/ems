@@ -1,0 +1,51 @@
+<html>
+<body>
+<form action="{% url 'eq_restore' %}" method="POST">
+{% csrf_token %}
+廃棄備品検索情報入力画面<br />
+物品種別<br />
+<input type="radio" name="Equipment" value="">PC
+<input type="radio" name="Equipment" value="">周辺機器
+<input type="radio" name="Equipment" value="">ソフトウェア
+<input type="radio" name="Equipment" value="">事務用品
+<input type="radio" name="Equipment" value="">電化製品
+<input type="radio" name="Equipment" value="">家具
+<input type="radio" name="Equipment" value="">書籍
+<input type="radio" name="Equipment" value="">消耗品
+<input type="radio" name="Equipment" value="" checked>その他
+<br />
+利用者
+<select name="">
+{% for users in user_list %}
+<option value="">{{users.user_name}}</option>
+{% endfor %}
+</select>
+
+
+<br />
+登録日
+<select name="purchasemonth" id="id_year">
+</select>
+年
+<select name="purchasedate" id="id_month">
+</select>
+月
+廃棄日
+<select name="disposalmonth" id="id2_year">
+</select>
+年
+<select name="disposaldate" id="id2_month">
+</select>
+月
+
+<br />
+<input type="submit" value="検索">
+
+</form>
+{%load static%}
+<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+</body>
+</html>
+
+
+
