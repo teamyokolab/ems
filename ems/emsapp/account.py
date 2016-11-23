@@ -12,6 +12,14 @@ class Account:
 				return False
 		except ObjectDoesNotExist:
 			return False
+
+	#login確認処理
+	def login_check(request):
+		try:
+			if request.session['user_name']:
+				return True
+		except (KeyError):
+			return False
 	
 	#userデータ取得処理 指定したnameとuser_nameが一致する情報を返す
 	def get_user(self, name):
@@ -27,8 +35,8 @@ class Account:
 
 	# user_list を返す関数
 	def get_user_list(authority, name):
-		if authority == 2:
-			users = User.objects.filter(Q(user_authority=1)| Q(user_authority=2))
+		if authority == 2 | authority == 3:
+			users = User.objects.filter(delete_flag=0).filter(Q(user_authority=1)| Q(user_authority=2))
 		if authority == 1:
 			users = User.objects.filter(user_name=name)
 		return users

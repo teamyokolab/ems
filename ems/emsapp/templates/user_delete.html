@@ -1,0 +1,16 @@
+<html>
+<body>
+
+<form action="{% url 'user_delete_comp' %}" method="post">
+{% csrf_token %}
+<ul>
+  {% for users in user %}
+  <li><input type="checkbox" name="delete_users" value="{{users.user_id}}">{{users.user_name}}</li>
+  {% endfor %}
+</ul>
+<input type="submit" value="削除">
+</form>
+
+<a href="{% url 'menu' %}">戻る</a>
+</body>
+</html>

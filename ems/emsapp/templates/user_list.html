@@ -1,0 +1,12 @@
+<html>
+<body>
+
+<ul>
+  {% for users in user %}
+  <li>{{users.user_name}}</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'menu' %}">戻る</a>
+</body>
+</html>

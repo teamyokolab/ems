@@ -39,7 +39,7 @@ class Equipment(models.Model):
 	)
 	eq_category = models.CharField(max_length=12, choices=CATEGORY_CHOICES)
 	purchase_date = models.DateField()
-	disposal_date = models.DateField()
+	disposal_date = models.DateField(null=True)
 	DISPOSAL_FLAG_CHOICES = (
 		('0', '未削除'),
 		('1', '削除')

@@ -3,6 +3,8 @@ from . account import Account
 from . models import User
 from django.db.models import Q
 from . models import Equipment
+from datetime import date
+from . equipment import EditEquipment
 # Create your views here.
 
 #login画面
@@ -65,22 +67,50 @@ def user_regist_comp(request):
 	account.create_user(name, password, authority)
 	return render(request, 'comp.html')
 
+#ユーザ一覧画面
+def user_list(request):
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request, 'user_list.html', {
+		'user' : users
+	})
+
+#ユーザ削除画面
+def user_delete(request):
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request, 'user_delete.html', {
+		'user' : users
+	})
+
+def user_delete_comp(request):
+	return render(request, 'comp.html')
+
 #備品登録画面
 def eq_regist(request):
-	try:
-		if request.session['user_name']:
-			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
-			return render(request,'eq_regist.html',{
-				'user_list': users
-			})
-	except (KeyError):
-			return render(request, 'error.html', {
-				'page' : 'index'
-			})
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request,'eq_regist.html',{
+		'user_list': users
+	})
 
 #備品登録完了画面
 def eq_regist_comp(request):
-	return render(request, 'comp.html')
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	name = request.POST['eq_name']
+	category = request.POST['category']
+	owner = request.POST['owner']
+	year = request.POST['year']
+	month = request.POST['month']
+	day = request.POST['day']
+	pur_date = year+'-'+month+'-'+day
+	owner_id = Account.get_user(owner)
+	EditEquipment.regist_equipment(name, owner_id, category, pur_date)
+	return render(request, 'comp.html')	
 
 #備品検索画面
 def eq_search(request):
