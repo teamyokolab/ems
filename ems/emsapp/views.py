@@ -61,9 +61,18 @@ def user_comp(request):
 	account = Account()
 	account.create_user(name, password, authority)
 	return render(request, 'comp.html')
-
+#備品検索画面
 def eq_search(request):
-	return render(request,'eq_search.html')
+	try:
+		if request.session['user_name']:
+			return render(request,'eq_search.html',{
+				'userlist':request.session['user_name']})
+	except (KeyError):
+		return render(request, 'error.html', {
+				'page' : 'index'
+				})
+	
+
 
 def logout(request):
 	del request.session['user_name']
