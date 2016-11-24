@@ -1,0 +1,16 @@
+<html>
+<body>
+
+<form action="{% url 'user_restore_comp' %}" method="post">
+{% csrf_token %}
+<ul>
+  {% for restore_users in users %}
+  <li><input type="checkbox" name="restore_users" value="{{restore_users.user_id}}">{{restore_users.user_name}}</li>
+  {% endfor %}
+</ul>
+<input type="submit" value="復元">
+</form>
+
+<a href="{% url 'menu' %}">戻る</a>
+</body>
+</html>
