@@ -80,10 +80,26 @@ def user_delete(request):
 	return render(request, 'user_delete.html', {
 		'user' : users
 	})
-
+#ユーザ削除完了画面
 def user_delete_comp(request):
+	delete_users = request.POST.getlist('delete_users')
+	users = User.objects.filter(user_id__in=delete_users)
+	users.update(delete_flag='1')
 	return render(request, 'comp.html')
 
+#ユーザ復元画面
+def user_restore(request):
+	delete_users = User.objects.filter(delete_flag=1)
+	return render(request, 'user_restore.html', {
+		'users' : delete_users
+	})
+
+#ユーザ復元完了
+def user_restore_comp(request):
+	restore_users = request.POST.getlist('restore_users')
+	users = User.objects.filter(user_id__in=restore_users)
+	users.update(delete_flag=0)
+	return render(request, 'comp.html')
 #備品登録画面
 def eq_regist(request):
 	if Account.login_check(request) == False:
