@@ -45,3 +45,6 @@ class Equipment(models.Model):
 		('1', '削除')
 	)
 	disposal_flag = models.IntegerField(choices=DISPOSAL_FLAG_CHOICES)
+	def __str__(self):
+		return self.eq_name
+		
