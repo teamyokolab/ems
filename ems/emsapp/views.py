@@ -124,22 +124,21 @@ def eq_regist_comp(request):
 	month = request.POST['month']
 	day = request.POST['day']
 	pur_date = year+'-'+month+'-'+day
-	owner_id = Account.get_user(owner)
+	account = Account()
+	owner_id = account.get_user(owner)
 	EditEquipment.regist_equipment(name, owner_id, category, pur_date)
 	return render(request, 'comp.html')	
 
 #備品検索画面
 def eq_search(request):
-	try:
-		if request.session['user_name']:
-			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
-			return render(request,'eq_search.html',{
-				'user_list': users
-			})
-	except (KeyError):
+	if Account.login_check(request) == False:
 		return render(request, 'error.html', {
-				'page' : 'index'
-				})
+			'page' : 'index'
+		})
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request,'eq_search.html',{
+		'user_list': users
+		})
 #備品検索結果画面
 def eq_list(request):
 	return render(request,'eq_list.html')

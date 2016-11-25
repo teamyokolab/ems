@@ -35,8 +35,8 @@ class Account:
 
 	# user_list を返す関数
 	def get_user_list(authority, name):
-		if authority == 2 | authority == 3:
+		if authority == 2 or authority == 3:
 			users = User.objects.filter(delete_flag=0).filter(Q(user_authority=1)| Q(user_authority=2))
-		if authority == 1:
+		else :
 			users = User.objects.filter(user_name=name)
 		return users
