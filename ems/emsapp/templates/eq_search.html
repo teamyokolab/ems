@@ -4,15 +4,15 @@
 {% csrf_token %}
 廃棄備品検索情報入力画面<br />
 物品種別<br />
-<input type="radio" name="Equipment" value="PC">PC
-<input type="radio" name="Equipment" value="周辺機器">周辺機器
-<input type="radio" name="Equipment" value="ソフトウェア">ソフトウェア
-<input type="radio" name="Equipment" value="事務用品">事務用品
-<input type="radio" name="Equipment" value="電化製品">電化製品
-<input type="radio" name="Equipment" value="家具">家具
-<input type="radio" name="Equipment" value="書籍">書籍
-<input type="radio" name="Equipment" value="消耗品">消耗品
-<input type="radio" name="Equipment" value="その他" checked>その他
+<input type="radio" name="category" value="PC">PC
+<input type="radio" name="category" value="周辺機器">周辺機器
+<input type="radio" name="category" value="ソフトウェア">ソフトウェア
+<input type="radio" name="category" value="事務用品">事務用品
+<input type="radio" name="category" value="電化製品">電化製品
+<input type="radio" name="category" value="家具">家具
+<input type="radio" name="category" value="書籍">書籍
+<input type="radio" name="category" value="消耗品">消耗品
+<input type="radio" name="category" value="その他" checked>その他
 <br />
 利用者
 <select name="owner">
@@ -24,18 +24,20 @@
 
 <br />
 登録日 <input type="button" value="入力する" onclick="myEnter(1)">
-<select name="purchasemonth" id="id_year">
+<!--<input type="checkbox" name="flag1" value="1" onclick="myEnter(1)">-->
+<select name="pur_year" id="id_year">
 </select>
 年
-<select name="purchasedate" id="id_month">
+<select name="pur_month" id="id_month">
 </select>
 月
 <br />
 廃棄日 <input type="button" value="入力する" onclick="myEnter(2)">
-<select name="disposalmonth" id="id2_year">
+<!-- <input type="checkbox" name="flag2" value="2" onclick="myEnter(2)"> -->
+<select name="dip_year" id="id2_year">
 </select>
 年
-<select name="disposaldate" id="id2_month">
+<select name="dip_mounth" id="id2_month">
 </select>
 月
 
@@ -49,17 +51,22 @@
 {%load static%}
 <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
 <script>
+optionLoop(1950, this_year, 'id_year', this_year);
+optionLoop(1950, this_year, 'id2_year', this_year);
+
+
+
 function myEnter(flag){
-	myRet = confirm("日付の入力をしますか？");
-	if ( myRet == true ){
-			if (flag == 1){
-				optionLoop(1950, this_year, 'id_year', this_year);
-				optionLoop(1, 12, 'id_month', this_month);
-			} else {
-				optionLoop(1950, this_year, 'id2_year', this_year);
-				optionLoop(1, 12, 'id2_month', this_month);
-		}
-	}
+   myRet = confirm("日付の入力をしますか？");
+   if ( myRet == true ){
+     if (flag == 1){
+          <!--optionLoop(1950, this_year, 'id_year', this_year);
+          optionLoop(1, 12, 'id_month', this_month);-->	
+      } else {
+          <!--optionLoop(1950, this_year, 'id2_year', this_year);
+          optionLoop(1, 12, 'id2_month', this_month);-->		
+      }
+   }
 }
 </script>
 </body>

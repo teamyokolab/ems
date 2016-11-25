@@ -5,6 +5,7 @@
 備品検索結果画面
 <table border="1">
   <tr>
+    <th>No</th>
     <th>物品名</th>
     <th>物品種別</th>
     <th>利用者</th>
