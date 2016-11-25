@@ -15,22 +15,23 @@
 <input type="radio" name="Equipment" value="その他" checked>その他
 <br />
 利用者
-<select name="">
+<select name="owner">
 {% for users in user_list %}
-<option value="">{{users.user_name}}</option>
+<option value="users.user_name">{{users.user_name}}</option>
 {% endfor %}
 </select>
 
 
 <br />
-登録日
+登録日 <input type="button" value="入力する" onclick="myEnter(1)">
 <select name="purchasemonth" id="id_year">
 </select>
 年
 <select name="purchasedate" id="id_month">
 </select>
 月
-廃棄日
+<br />
+廃棄日 <input type="button" value="入力する" onclick="myEnter(2)">
 <select name="disposalmonth" id="id2_year">
 </select>
 年
@@ -48,10 +49,18 @@
 {%load static%}
 <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
 <script>
-optionLoop(1950, this_year, 'id_year', this_year);
-optionLoop(1, 12, 'id_month', this_month);
-optionLoop(1950, this_year, 'id2_year', this_year);
-optionLoop(1, 12, 'id2_month', this_month);
+function myEnter(flag){
+	myRet = confirm("日付の入力をしますか？");
+	if ( myRet == true ){
+			if (flag == 1){
+				optionLoop(1950, this_year, 'id_year', this_year);
+				optionLoop(1, 12, 'id_month', this_month);
+			} else {
+				optionLoop(1950, this_year, 'id2_year', this_year);
+				optionLoop(1, 12, 'id2_month', this_month);
+		}
+	}
+}
 </script>
 </body>
 </html>
