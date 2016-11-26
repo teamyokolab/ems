@@ -3,6 +3,7 @@ from . account import Account
 from . models import User
 from django.db.models import Q
 from . models import Equipment
+from django.shortcuts import get_object_or_404, render
 from datetime import date
 from . equipment import EditEquipment
 # Create your views here.
@@ -132,6 +133,7 @@ def eq_regist_comp(request):
 #備品検索画面
 def eq_search(request):
 	if Account.login_check(request) == False:
+
 		return render(request, 'error.html', {
 			'page' : 'index'
 		})
@@ -141,7 +143,43 @@ def eq_search(request):
 		})
 #備品検索結果画面
 def eq_list(request):
-	return render(request,'eq_list.html')
+	#try:
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	
+	category = request.POST['category']
+	owner = request.POST['owner']
+	#pflag = request.POST['flag1']
+	#dflag = request.POST['flag2']
+	account = Account()
+	owner_id = account.get_user(owner)
+	try:
+		#if(pflag == 1):
+			pur_year = request.POST['pur_year']
+			pur_month = request.POST['pur_month']
+		#if(dflag == 2):
+			dip_year = request.POST['dip_year']
+			dip_month = request.POST['dip_month']
+	except KeyError:
+		pass
+
+	if pur_year != 'null' and dip_year != 'null':
+		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
+	elif pur_year != null and dip_year == null:
+		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category) | Q(owner_user=owner_id))
+	elif pur_year == null and dip_year != null:
+		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category) | Q(owner_user=owner_id))
+	else:
+		equipments = Equipment.objects.filter(Q(eq_category=category) | Q(owner_user=owner_id))
+	return render(request,'eq_list.html',{
+			'equipments':equipments
+		})
+	#except KeyError:
+		#return render(request, 'error.html', {
+		#	'page' : 'index'
+		#})
 
 #備品廃棄用検索画面
 def eq_disposal_search(request):
