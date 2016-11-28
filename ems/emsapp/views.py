@@ -155,6 +155,10 @@ def eq_list(request):
 	#dflag = request.POST['flag2']
 	account = Account()
 	owner_id = account.get_user(owner)
+	pur_year = None
+	pur_month = None
+	dip_year = None
+	dip_month = None
 	try:
 		#if(pflag == 1):
 			pur_year = request.POST['pur_year']
@@ -165,12 +169,12 @@ def eq_list(request):
 	except KeyError:
 		pass
 
-	if pur_year != 'null' and dip_year != 'null':
+	if pur_year is not None and dip_year is not None:
+		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
+	elif pur_year is not None and dip_year is None:
 		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
-	elif pur_year != null and dip_year == null:
-		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category) | Q(owner_user=owner_id))
-	elif pur_year == null and dip_year != null:
-		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category) | Q(owner_user=owner_id))
+	elif pur_year is  None and dip_year is not None:
+		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
 	else:
 		equipments = Equipment.objects.filter(Q(eq_category=category) | Q(owner_user=owner_id))
 	return render(request,'eq_list.html',{

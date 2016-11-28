@@ -51,20 +51,16 @@
 {%load static%}
 <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
 <script>
-optionLoop(1950, this_year, 'id_year', this_year);
-optionLoop(1950, this_year, 'id2_year', this_year);
-
-
 
 function myEnter(flag){
    myRet = confirm("日付の入力をしますか？");
    if ( myRet == true ){
      if (flag == 1){
-          <!--optionLoop(1950, this_year, 'id_year', this_year);
-          optionLoop(1, 12, 'id_month', this_month);-->	
+          optionLoop(1950, this_year, 'id_year', this_year);
+          optionLoop(1, 12, 'id_month', this_month);	
       } else {
-          <!--optionLoop(1950, this_year, 'id2_year', this_year);
-          optionLoop(1, 12, 'id2_month', this_month);-->		
+          optionLoop(1950, this_year, 'id2_year', this_year);
+          optionLoop(1, 12, 'id2_month', this_month);		
       }
    }
 }

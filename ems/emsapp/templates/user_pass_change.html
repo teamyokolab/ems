@@ -1,0 +1,17 @@
+<html>
+<body>
+  <h1>パスワード変更</h1>
+  <form action="{% url 'user_pass_comp'%}" method="post">
+  {% csrf_token %}
+  ユーザ
+  <select name="user_name">
+  {% for users in user_list %}
+  <option value="{{users.user_name}}">{{users.user_name}}</option>
+  {% endfor %}
+  </select>
+  <br />
+  新規パスワード入力: <input type="text" name="new_pass"> <br />
+  新規パスワード再入力: <input type="text" name="re_input_pass"><br />
+  <input type="submit" value="登録">
+</body>
+</html>
