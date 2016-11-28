@@ -101,6 +101,21 @@ def user_restore_comp(request):
 	users = User.objects.filter(user_id__in=restore_users)
 	users.update(delete_flag=0)
 	return render(request, 'comp.html')
+#パスワード変更
+def user_pass(request):
+	users = User.objects.filter(delete_flag=0)
+	return render(request, 'user_pass_change.html', {
+		'user_list' : users
+	})
+
+#パスワード変更完了
+def user_pass_comp(request):
+	name = request.POST['user_name']
+	new_pass = request.POST['new_pass']
+	user = User.objects.filter(user_name=name)
+	user.update(user_password = new_pass)
+	return render(request, 'comp.html')
+
 #備品登録画面
 def eq_regist(request):
 	if Account.login_check(request) == False:
@@ -172,9 +187,9 @@ def eq_list(request):
 	if pur_year is not None and dip_year is not None:
 		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
 	elif pur_year is not None and dip_year is None:
-		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
+		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
 	elif pur_year is  None and dip_year is not None:
-		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
+		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
 	else:
 		equipments = Equipment.objects.filter(Q(eq_category=category) | Q(owner_user=owner_id))
 	return render(request,'eq_list.html',{
