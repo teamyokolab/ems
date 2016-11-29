@@ -22,7 +22,7 @@ class Account:
 			return False
 	
 	#userデータ取得処理 指定したnameとuser_nameが一致する情報を返す
-	def get_user(self, name):
+	def get_user(name):
 		try:
 			user = User.objects.get(user_name = name)
 			return user

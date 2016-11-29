@@ -156,49 +156,41 @@ def eq_search(request):
 	return render(request,'eq_search.html',{
 		'user_list': users
 		})
+
 #備品検索結果画面
 def eq_list(request):
-	#try:
 	if Account.login_check(request) == False:
 		return render(request, 'error.html', {
 			'page' : 'index'
 		})
 	
 	category = request.POST['category']
-	owner = request.POST['owner']
-	#pflag = request.POST['flag1']
-	#dflag = request.POST['flag2']
-	account = Account()
-	owner_id = account.get_user(owner)
+	owner = User.objects.get(user_name=request.POST['owner'])
+	owner_id = owner.user_id
 	pur_year = None
 	pur_month = None
 	dip_year = None
 	dip_month = None
 	try:
-		#if(pflag == 1):
-			pur_year = request.POST['pur_year']
-			pur_month = request.POST['pur_month']
-		#if(dflag == 2):
-			dip_year = request.POST['dip_year']
-			dip_month = request.POST['dip_month']
+		pur_year = request.POST['pur_year']
+		pur_month = request.POST['pur_month']
+		dip_year = request.POST['dip_year']
+		dip_month = request.POST['dip_month']
 	except KeyError:
 		pass
 
-	if pur_year is not None and dip_year is not None:
-		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
-	elif pur_year is not None and dip_year is None:
-		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
-	elif pur_year is  None and dip_year is not None:
-		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
-	else:
-		equipments = Equipment.objects.filter(Q(eq_category=category) | Q(owner_user=owner_id))
+	equipments = EditEquipment.get_eq_list(pur_year, pur_month, dip_year, dip_month, category, owner_id);
+#	if pur_year is not None and dip_year is not None:
+#		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
+#	elif pur_year is not None and dip_year is None:
+#		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
+#	elif pur_year is  None and dip_year is not None:
+#		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
+#	else:
+#		equipments = Equipment.objects.filter(Q(eq_category=category) | Q(owner_user=owner_id))
 	return render(request,'eq_list.html',{
 			'equipments':equipments
 		})
-	#except KeyError:
-		#return render(request, 'error.html', {
-		#	'page' : 'index'
-		#})
 
 #備品廃棄用検索画面
 def eq_disposal_search(request):
