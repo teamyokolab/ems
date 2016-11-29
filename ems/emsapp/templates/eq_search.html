@@ -20,7 +20,7 @@
 利用者
 <select name="owner">
 {% for users in user_list %}
-<option value="users.user_name">{{users.user_name}}</option>
+<option value={{users.user_name}}>{{users.user_name}}</option>
 {% endfor %}
 </select>
 
