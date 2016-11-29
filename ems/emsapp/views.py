@@ -6,6 +6,7 @@ from . models import Equipment
 from django.shortcuts import get_object_or_404, render
 from datetime import date
 from . equipment import EditEquipment
+from . equipment import Search
 # Create your views here.
 
 #login画面
@@ -101,6 +102,7 @@ def user_restore_comp(request):
 	users = User.objects.filter(user_id__in=restore_users)
 	users.update(delete_flag=0)
 	return render(request, 'comp.html')
+
 #パスワード変更
 def user_pass(request):
 	users = User.objects.filter(delete_flag=0)
@@ -140,22 +142,22 @@ def eq_regist_comp(request):
 	month = request.POST['month']
 	day = request.POST['day']
 	pur_date = year+'-'+month+'-'+day
-	account = Account()
-	owner_id = account.get_user(owner)
+	owner_id = User.objects.get(user_name=owner)
 	EditEquipment.regist_equipment(name, owner_id, category, pur_date)
 	return render(request, 'comp.html')	
 
 #備品検索画面
 def eq_search(request):
 	if Account.login_check(request) == False:
-
 		return render(request, 'error.html', {
 			'page' : 'index'
 		})
 	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
 	return render(request,'eq_search.html',{
-		'user_list': users
-		})
+		'user_list': users,
+		'page_title': '',
+		'next_page' : 'eq_list',
+	})
 
 #備品検索結果画面
 def eq_list(request):
@@ -163,67 +165,103 @@ def eq_list(request):
 		return render(request, 'error.html', {
 			'page' : 'index'
 		})
-	
-	category = request.POST['category']
-	owner = User.objects.get(user_name=request.POST['owner'])
-	owner_id = owner.user_id
-	pur_year = None
-	pur_month = None
-	dip_year = None
-	dip_month = None
-	try:
-		pur_year = request.POST['pur_year']
-		pur_month = request.POST['pur_month']
-		dip_year = request.POST['dip_year']
-		dip_month = request.POST['dip_month']
-	except KeyError:
-		pass
-
-	equipments = EditEquipment.get_eq_list(pur_year, pur_month, dip_year, dip_month, category, owner_id);
-#	if pur_year is not None and dip_year is not None:
-#		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category) | Q(owner_user=owner_id))
-#	elif pur_year is not None and dip_year is None:
-#		equipments = Equipment.objects.filter(purchase_date__year=pur_year).filter(purchase_date__month=pur_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
-#	elif pur_year is  None and dip_year is not None:
-#		equipments = Equipment.objects.filter(disposal_date__year=dip_year).filter(disposal_date__month=dip_month).filter(Q(eq_category=category)).filter(Q(owner_user=owner_id))
-#	else:
-#		equipments = Equipment.objects.filter(Q(eq_category=category) | Q(owner_user=owner_id))
+	equipments = Search.search(request, 0)
 	return render(request,'eq_list.html',{
 			'equipments':equipments
+	})
+
+#備品更新検索画面
+def eq_update_search(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
 		})
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request, 'eq_search.html', {
+		'user_list' : users,
+		'page_title' : '(更新)',
+		'next_page' : 'eq_update_list',
+	})
+
+#備品更新検索結果
+def eq_update_list(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	equipments = Search.search(request, 0)
+	return render(request, 'eq_list.html', {
+		'equipments' : equipments,
+	})
 
 #備品廃棄用検索画面
 def eq_disposal_search(request):
-	try:
-		if request.session['user_name']:
-			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
-			return render(request,'eq_disposal_search.html',{
-					'user_list': users
-				})
-	except (KeyError):
-			return render(request, 'error.html', {
-					'page' : 'index'
-				})
-#備品廃棄用検索結果表示
-def eq_disposal(request):
-	return render(request,'eq_disposal.html')
-
-#備品復元用検索画面
-def eq_restore_search(request):
-	try:
-		if request.session['user_name']:
-			users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
-			return render(request,'eq_restore_search.html',{
-					'user_list': users
-					})
-	except (KeyError):
+	if Account.login_check(request) == False:
 		return render(request, 'error.html', {
 			'page' : 'index'
-			})
+		})		
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request, 'eq_search.html' ,{
+		'user_list': users,
+		'page_title': '(廃棄)',
+		'next_page' : 'eq_disposal_list',
+	})
+
+#備品廃棄用検索結果表示
+def eq_disposal_list(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	equipments = Search.search(request, 0)
+	return render(request,'eq_check_list.html', {
+		'equipments':equipments, 
+		'next_page' : 'eq_disposal_comp'
+	})
+#備品廃棄完了画面
+def eq_disposal_comp(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	eq = request.POST['eq_list']
+	EditEquipment.change_flag(eq, 1)
+	return render(request, 'comp.html')
+	
+#備品復元用検索画面
+def eq_restore_search(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})			
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request,'eq_search.html',{
+		'user_list': users,
+		'page_title': '(復元)',
+		'next_page' : 'eq_restore_list',				
+	})
 
 #備品復元用検索結果画面
-def eq_restore(request):
-	return render(request,'eq_restore.html')
+def eq_restore_list(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	equipments = Search.search(request, 1)
+	return render(request,'eq_check_list.html', {
+		'equipments' : equipments,
+		'next_page' : 'eq_restore_comp'
+	})
+
+#備品復元完了画面
+def eq_restore_comp(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	eq = request.POST['eq_list']
+	EditEquipment.change_flag(eq, 0)
+	return render(request, 'comp.html')
 
 #ログアウト
 def logout(request):

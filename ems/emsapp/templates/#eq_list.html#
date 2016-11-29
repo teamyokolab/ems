@@ -1,8 +1,0 @@
-<html>
-<body>
-<form action=""method="POST">
-{% csrf_token %}
-備品
-
-</body>
-</html>
