@@ -3,9 +3,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
-<form action="{% url 'eq_list' %}" method="POST">
+<form action="{% url next_page %}" method="POST">
 {% csrf_token %}
-廃棄備品検索情報入力画面<br />
+{{page_title}}検索情報入力画面<br />
 物品種別<br />
 <input type="radio" name="category" value="PC">PC
 <input type="radio" name="category" value="周辺機器">周辺機器
