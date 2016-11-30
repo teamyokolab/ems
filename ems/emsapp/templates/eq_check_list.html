@@ -4,11 +4,16 @@
 <form action="{% url next_page %}" method="post">
 {% csrf_token %}
 <ul>
+
   {% for eq in equipments %}
   <li><input type="checkbox" name="eq_list" value="{{eq.eq_id}}">{{eq.eq_name}}</li>
   {% endfor %}
+
+  {% if flag == 1 %}
+  {% endif %}
 </ul>
 <input type="submit" value="決定">
+
 </form>
 
 <a href="{% url 'menu' %}">戻る</a>
