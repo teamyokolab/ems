@@ -31,11 +31,10 @@ def menu(request):
 			name = request.POST['user_name']
 			password = request.POST['password']
 			#アカウントオブジェクトを作成(account.py参照)
-			account = Account()
 			#ログイン処理(True->SESSTIONへ情報保存)
-			if account.login(name, password):
+			if Account.login(name, password):
 				#user_name = nameのユーザ情報を取得
-				user = account.get_user(name)
+				user = Account.get_user(name)
 				#sessionにユーザ名と権限を保存
 				request.session['user_name'] = user.user_name
 				request.session['user_authority'] = user.user_authority
