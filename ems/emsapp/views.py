@@ -217,6 +217,13 @@ def eq_update_comp(request):
 		return rrender(request, 'error.html', {
 			'page' : 'index'
 		})
+	update_id = request.POST['update_id']
+	name = request.POST['name']
+	category = request.POST['category']
+	owner = request.POST['owner']
+	owner_id = User.objects.get(user_name=owner).user_id
+	eq = Equipment.objects.filter(eq_id=update_id)
+	eq.update(eq_name=name, eq_category=category, owner_user_id=owner_id)
 	return render(request, 'comp.html')
 
 
