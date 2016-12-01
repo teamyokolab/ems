@@ -13,13 +13,13 @@
   {% for eq in equipments %}
     <li><input type="checkbox" name="eq_list" id = "{{eq.eq_id}}" value="{{eq.eq_id}}"/>{{eq.eq_name}}
     {% if flag == 1 %}
-    <select name="year" class="date" id="year{{ eq.eq_id }}">
+    <select name="year{{ eq.eq_id }}" class="date" id="year{{ eq.eq_id }}">
     </select>
     年
-    <select name="month" class="date" id="month{{ eq.eq_id }}">
+    <select name="month{{ eq.eq_id }}" class="date" id="month{{ eq.eq_id }}">
     </select>
     月
-    <select name="day" class="date" id="day{{ eq.eq_id }}">
+    <select name="day{{ eq.eq_id }}" class="date" id="day{{ eq.eq_id }}">
     </select>
     日
     <script>

@@ -258,7 +258,15 @@ def eq_disposal_comp(request):
 		return render(request, 'error.html', {
 			'page' : 'index'
 		})
-	eq = request.POST['eq_list']
+	eq = request.POST.getlist('eq_list')
+	for id in eq :
+		year = request.POST["year"+id]
+		month = request.POST["month"+id]
+		day = request.POST["day"+id]
+		date = year + "-" + month + "-" + day
+		dis_eq = Equipment.objects.filter(eq_id=id)
+		dis_eq.update(disposal_date = date)
+	
 	EditEquipment.change_flag(eq, 1)
 	return render(request, 'comp.html')
 	
@@ -294,7 +302,7 @@ def eq_restore_comp(request):
 		return render(request, 'error.html', {
 			'page' : 'index'
 		})
-	eq = request.POST['eq_list']
+	eq = request.POST.getlist('eq_list')
 	EditEquipment.change_flag(eq, 0)
 	return render(request, 'comp.html')
 
