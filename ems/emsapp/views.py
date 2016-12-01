@@ -215,6 +215,7 @@ def eq_disposal_list(request):
 	equipments = Search.search(request, 0)
 	return render(request,'eq_check_list.html', {
 		'equipments':equipments, 
+		'flag' : 1,
 		'next_page' : 'eq_disposal_comp'
 	})
 #備品廃棄完了画面
@@ -249,6 +250,7 @@ def eq_restore_list(request):
 	equipments = Search.search(request, 1)
 	return render(request,'eq_check_list.html', {
 		'equipments' : equipments,
+		'flag' : 0,
 		'next_page' : 'eq_restore_comp'
 	})
 
