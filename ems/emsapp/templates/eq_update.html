@@ -1,0 +1,30 @@
+<html>
+<body>
+
+<form action="{% url 'eq_update_comp' %}" method="post">
+{% csrf_token %}
+<ul>
+  <li>物品名:<input type="text" name="name" value="{{equipment.eq_name}}"></li>
+  <li>物品種別:
+	<select name="category">
+	<option value={{category}}>{{category}}</option>
+	{% for categorys in categorys%}
+	<option value={{categorys}}>{{categorys}}</option>
+	{% endfor %}
+	</select>
+  </li>
+  <li>利用者: 
+	<select name="owner">
+	  <option value=({user}}>{{user}}</option>
+	{% for users in users %}
+	  <option value={{users.user_name}}>{{users.user_name}}</option>
+	{% endfor %}
+	</select>
+  </li>
+</ul>
+<input type="submit" value="決定">
+</form>
+
+<a href="{% url 'menu' %}">戻る</a>
+</body>
+</html>
