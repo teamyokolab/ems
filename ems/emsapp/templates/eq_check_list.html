@@ -1,21 +1,59 @@
 <html>
+<head>
+{%load static%}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+
 <body>
 
 <form action="{% url next_page %}" method="post">
 {% csrf_token %}
 <ul>
-
+<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
   {% for eq in equipments %}
-  <li><input type="checkbox" name="eq_list" value="{{eq.eq_id}}">{{eq.eq_name}}</li>
-  {% endfor %}
-
+  <li><input type="checkbox" name="eq_list" id = "check" value="{{eq.eq_id}}">{{eq.eq_name}}</li>
   {% if flag == 1 %}
+  <select name="year{{ eq.eq_id }}" id="year{{ eq.eq_id }}">
+  </select>
+  年
+  <select name="month{{ eq.eq_id }}" id="month{{ eq.eq_id }}">
+  </select>
+  月
+  <select name="day{{ eq.eq_id }}" id="day{{ eq.eq_id }}">
+  </select>
+  日
+  <script>
+  optionLoop(2005, this_year, 'year{{ eq.eq_id }}', this_year);
+  optionLoop(1, 12, 'month{{ eq.eq_id }}', this_month);
+  optionLoop(1, 12, 'day{{ eq.eq_id }}', this_day); 
+  </script>
+
   {% endif %}
+  {% endfor %}
 </ul>
 <input type="submit" value="決定">
 
 </form>
 
 <a href="{% url 'menu' %}">戻る</a>
+<!--
+<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+<script>
+$('#check').click(function() {
+var num = $("[name=eq_list] : checked").val()
+	if ($(this).prop('checked') == false) {
+		$('#year').attr('disabled', 'disabled');
+		$('#month').attr('disabled', 'disabled');
+		$('#day').empty();
+	} else {
+		optionLoop(2005, this_year, 'year'+num, this_year);
+		optionLoop(1, 12, 'month'+num, this_month);
+		optionLoop(1, 12, 'day'+num, this_day);     
+	}
+	
+});
+*/
+</script>
+-->
 </body>
 </html>
