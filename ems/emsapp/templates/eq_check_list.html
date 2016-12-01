@@ -11,49 +11,46 @@
 <ul>
 <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
   {% for eq in equipments %}
-  <li><input type="checkbox" name="eq_list" id = "check" value="{{eq.eq_id}}">{{eq.eq_name}}</li>
-  {% if flag == 1 %}
-  <select name="year{{ eq.eq_id }}" id="year{{ eq.eq_id }}">
-  </select>
-  年
-  <select name="month{{ eq.eq_id }}" id="month{{ eq.eq_id }}">
-  </select>
-  月
-  <select name="day{{ eq.eq_id }}" id="day{{ eq.eq_id }}">
-  </select>
-  日
-  <script>
-  optionLoop(2005, this_year, 'year{{ eq.eq_id }}', this_year);
-  optionLoop(1, 12, 'month{{ eq.eq_id }}', this_month);
-  optionLoop(1, 12, 'day{{ eq.eq_id }}', this_day); 
-  </script>
-
-  {% endif %}
+    <li><input type="checkbox" name="eq_list" id = "{{eq.eq_id}}" value="{{eq.eq_id}}"/>{{eq.eq_name}}
+    {% if flag == 1 %}
+    <select name="year" class="date" id="year{{ eq.eq_id }}">
+    </select>
+    年
+    <select name="month" class="date" id="month{{ eq.eq_id }}">
+    </select>
+    月
+    <select name="day" class="date" id="day{{ eq.eq_id }}">
+    </select>
+    日
+    <script>
+    $('.date').prop('disabled', true);
+    $('input[type="checkbox"]').click(function(){
+	var id = $(this).attr('id');
+	if($(this).is(':checked')){
+	  $('#year'+id).prop('disabled', false);
+	  $('#month'+id).prop('disabled', false);
+	  $('#day'+id).prop('disabled', false);
+	} else {
+	  $('#year'+id).prop('disabled', true);
+          $('#month'+id).prop('disabled', true);
+          $('#day'+id).prop('disabled', true);
+	}
+    });
+    optionLoop(2005, this_year, 'year{{ eq.eq_id }}', this_year);
+    optionLoop(1, 12, 'month{{ eq.eq_id }}', this_month);
+    optionLoop(1, 31, 'day{{ eq.eq_id }}', this_day); 
+    </script>
+    {% endif %}
+  </li>
   {% endfor %}
 </ul>
 <input type="submit" value="決定">
-
 </form>
 
 <a href="{% url 'menu' %}">戻る</a>
-<!--
-<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+
 <script>
-$('#check').click(function() {
-var num = $("[name=eq_list] : checked").val()
-	if ($(this).prop('checked') == false) {
-		$('#year').attr('disabled', 'disabled');
-		$('#month').attr('disabled', 'disabled');
-		$('#day').empty();
-	} else {
-		optionLoop(2005, this_year, 'year'+num, this_year);
-		optionLoop(1, 12, 'month'+num, this_month);
-		optionLoop(1, 12, 'day'+num, this_day);     
-	}
-	
-});
-*/
+
 </script>
--->
 </body>
 </html>
