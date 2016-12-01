@@ -189,9 +189,36 @@ def eq_update_list(request):
 			'page' : 'index'
 		})
 	equipments = Search.search(request, 0)
-	return render(request, 'eq_list.html', {
+	return render(request, 'eq_update_list.html', {
 		'equipments' : equipments,
 	})
+
+#備品更新内容入力
+def eq_update(request, detail_id):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	eq = Equipment.objects.get(eq_id=detail_id)
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	user = request.session['user_name']
+	category = eq.eq_category
+	categorys = ['PC','周辺機器','ソフトウェア','事務用品','電化製品','家具','書籍','消耗品','その他']
+	return render(request, 'eq_update.html', {
+		'equipment' : eq,
+		'user' : user,
+		'users' : users,
+		'categorys' : categorys,
+		'category' : category
+	})
+#備品更新完了
+def eq_update_comp(request):
+	if Account.login_check(request) == False:
+		return rrender(request, 'error.html', {
+			'page' : 'index'
+		})
+	return render(request, 'comp.html')
+
 
 #備品廃棄用検索画面
 def eq_disposal_search(request):
