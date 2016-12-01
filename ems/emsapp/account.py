@@ -3,7 +3,7 @@ from . models import User
 from django.db.models import Q
 class Account:
 	#login認証処理	
-	def login(self, name, password):
+	def login(name, password):
 		try:
 			user_info = User.objects.get(user_name = name)
 			if user_info.user_password == password:
