@@ -37,6 +37,7 @@
 </select>
 月
 <br />
+{% if page_title != "(廃棄)" %}
 廃棄日 
 <input type="button" name="disposal_date" value = "入力する" id = 'd_exist'>
 <input type="button" name="disposal_nodate" value = "入力を取り消す" id = 'd_noexist'>
@@ -48,7 +49,7 @@
 月
 
 <br />
-
+{% endif %}
 
 
 <input type="submit" value="検索">
