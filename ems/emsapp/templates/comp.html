@@ -1,6 +1,11 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
 <h1>処理が完了しました</h1>
+</div>
 <p><a href="{% url 'menu' %}">戻る</a>
-</body>
-</html>
+{% endblock content %}
+

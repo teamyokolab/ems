@@ -1,12 +1,35 @@
-<html>
-<body>
 
-<ul>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>ユーザ一覧</h1>
+</div>
+
+<style>
+.black {
+  background-color: #333;
+  color: white;
+}
+.border-black {
+  border: solid 1px #333;
+}
+</style>
+
+<div class="panel border-black">
+  <div class="panel-heading black">
+    <h3 class="panel-title">ユーザ名</h3>
+  </div>
+
+<ul class="list-group">
   {% for users in user %}
-  <li>{{users.user_name}}</li>
+  <li class="list-group-item">{{users.user_name}}</li>
   {% endfor %}
 </ul>
+</div>
 
 <a href="{% url 'menu' %}">戻る</a>
-</body>
-</html>
+
+{% endblock content%}

@@ -1,0 +1,64 @@
+{%load staticfiles %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{% static 'emsapp/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'emsapp/bootstrap/css/bootstrap-theme.min.css' %}" rel="stylesheet">
+<link href="{% static 'emsapp/bootstrap/css/bootstrap-stickey-footer.css' %}" rel="stylesheet">
+<script src="{% static 'emsapp/bootstrap/js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'emsapp/bootstrap/js/bootstrap.min.js' %}"></script>
+{% block extrahead %}{% endblock %}
+</head>
+<body>
+<!-- 1.ナビゲーションバーの設定 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- 2.ヘッダ情報 -->
+        <div class="navbar-header">
+            <p class="navbar-text">備品管理システム(一般)</p>
+        </div>
+       <!-- 3.リストの配置 -->
+        <ul class="nav navbar-nav">
+          {% if authority != 3 %}
+	    <li class=""><a href="{%url 'eq_search'%}">備品検索</a></li>
+            <li class=""><a href="{%url 'eq_regist'%}">備品登録</a></li>
+            <li class=""><a href="{%url 'eq_update_search'%}">備品データ更新</a></li>
+            <li class=""><a href="{%url 'eq_disposal_search'%}">備品廃棄</a></li>
+            <li class=""><a href="{%url 'eq_restore_search'%}">廃棄備品復元</a></li>
+	    {% ifequal authority 2 %}
+            <li><a href="">CSV入力</a></li>
+            <li><a href="">CSV出力</a></li>
+            {% endifequal %}
+	  {% endif %}
+	  {% ifequal authority 3%}
+	    <li class=""><a href="{% url 'user_list'   %}">ユーザ一覧</a></li>
+	    <li class=""><a href="{% url 'user_regist' %}">ユーザ作成</a></li>
+	    <li class=""><a href="{% url 'user_delete' %}">ユーザ削除</a></li>
+	    <li class=""><a href="{% url 'user_restore'%}">ユーザ復元</a></li>
+	    <li class=""><a href="{% url 'user_pass'   %}">パスワード変更</a></li>
+	  {% endifequal %}
+            <li class=""><a href="{%url 'logout'%}">ログアウト</a></li>
+	</ul>
+    </div>
+</nav>
+
+<style>
+.main{
+margin-top: 50px;
+}
+</style>
+  <div class="container main">
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  </div>
+
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">Copyright © 2016 YokoLab. All Rights Reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

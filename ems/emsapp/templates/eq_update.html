@@ -1,31 +1,53 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>備品情報更新</h1>
+</div>
 
 <form action="{% url 'eq_update_comp' %}" method="post">
 {% csrf_token %}
-<ul>
-  <li>物品名:<input type="text" name="name" value="{{equipment.eq_name}}"></li>
-  <li>物品種別:
-	<select name="category">
+  <div class="form-group">
+    <label for="eq_name" class="control-label">備品名</label>
+    <input type="text" class="form-control" name="name" value="{{equipment.eq_name}}">
+  </div>
+   <div class="form-group">
+      <label for="category" class="control-label">種別</label> 
+      <select class="form-control" name="category">
 	<option value={{category}}>{{category}}</option>
 	{% for categorys in categorys%}
 	<option value={{categorys}}>{{categorys}}</option>
 	{% endfor %}
-	</select>
-  </li>
-  <li>利用者: 
-	<select name="owner">
-	  <option value="{{user}}">{{user}}</option>
+      </select>
+  </div>
+   <div class="form-group">
+      <label for="owner" class="control-label">利用者</label> 
+      <select class="form-control" name="owner">
+	<option value="{{user}}">{{user}}</option>
 	{% for users in users %}
-	  <option value="{{users.user_name}}">{{users.user_name}}</option>
+	<option value="{{users.user_name}}">{{users.user_name}}</option>
 	{% endfor %}
-	</select>
-  </li>
-</ul>
+      </select>
+  </div>
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+
 <input type="hidden" name="update_id" value={{equipment.eq_id}}>
-<input type="submit" value="決定">
+<input type="submit" class="tgle" value="決定">
+<input type="button" class="tgle" value="メニューへ戻る" onclick="location.href='{%url 'menu'%}'">
 </form>
 
-<a href="{% url 'menu' %}">戻る</a>
-</body>
-</html>
+
+{% endblock content %}

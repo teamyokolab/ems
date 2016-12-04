@@ -1,9 +1,16 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>検索結果</h1>
+</div>
+
 <form action=""method="POST">
 {% csrf_token %}
-備品検索結果画面
-<table border="1">
+<table class="table table-hover">
+  <thead>
   <tr>
     <th>物品名</th>
     <th>物品種別</th>
@@ -11,19 +18,31 @@
     <th>購入日</th>
     <th>廃棄日</th>
   </tr>
-{% for equipment in equipments%}
-  <tr>
+  </thead>
+  <tbody>
+    {% for equipment in equipments%}
+    <tr>
   	<td>{{equipment.eq_name}}</td>
   	<td>{{equipment.eq_category}}</td>
   	<td>{{equipment.owner_user}}</td>
     	<td>{{equipment.purchase_date}}</td>
     	<td>{{equipment.disposal_date}}</td>
-
-  </tr>
-{% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
-<input type="button" value="OK" onclick="location.href='{% url 'menu'%}'">
-<input type="button" value="戻る" onclick="location.href='{%url 'eq_search'%}'">
 
-</body>
-</html>
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+<input type="button" class="btn tgle" value="OK" onclick="location.href='{% url 'menu'%}'">
+<input type="button" class="btn tgle" value="戻る" onclick="location.href='{%url 'eq_search'%}'">
+{% endblock content %}

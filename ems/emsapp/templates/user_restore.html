@@ -1,16 +1,48 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>復元ユーザ選択</h1>
+</div>
 
 <form action="{% url 'user_restore_comp' %}" method="post">
 {% csrf_token %}
-<ul>
-  {% for restore_users in users %}
-  <li><input type="checkbox" name="restore_users" value="{{restore_users.user_id}}">{{restore_users.user_name}}</li>
-  {% endfor %}
-</ul>
-<input type="submit" value="復元">
-</form>
 
-<a href="{% url 'menu' %}">戻る</a>
-</body>
-</html>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>ユーザ名</th>
+  </tr>
+  </thead>
+  <tbody>  
+  {% for restore_users in users %}
+  <tr>
+    <td><input type="checkbox" name="restore_users" value="{{restore_users.user_id}}"></td>
+    <td>{{restore_users.user_name}}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+
+<div class="form-group">
+  <input type="submit" class="btn tgle" value="復元">
+  <input type="button" class="btn tgle" value="戻る" onclick="location.href='{% url 'menu'%}'">
+</div>
+</form>
+{% endblock content %}

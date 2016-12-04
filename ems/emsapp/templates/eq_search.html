@@ -1,58 +1,78 @@
-<html>
-<head>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+<div class="page-header">
+<h1>検索情報入力画面{{page_title}}</h1>
+</div>
+
 <form action="{% url next_page %}" method="POST">
-{% csrf_token %}
-{{page_title}}検索情報入力画面<br />
-物品種別<br />
-<input type="radio" name="category" value="PC">PC
-<input type="radio" name="category" value="周辺機器">周辺機器
-<input type="radio" name="category" value="ソフトウェア">ソフトウェア
-<input type="radio" name="category" value="事務用品">事務用品
-<input type="radio" name="category" value="電化製品">電化製品
-<input type="radio" name="category" value="家具">家具
-<input type="radio" name="category" value="書籍">書籍
-<input type="radio" name="category" value="消耗品">消耗品
-<input type="radio" name="category" value="その他" checked>その他
-<br />
-利用者
-<select name="owner">
-{% for users in user_list %}
-<option value={{users.user_name}}>{{users.user_name}}</option>
-{% endfor %}
-</select>
+{% csrf_token%}
 
+<div class="form-group">
+  物品種別 
+  <select class="form-control" style="width:200px;" name="category">
+    <option value="PC">PC</option>
+    <option value="周辺機器">周辺機器</option>
+    <option value="ソフトウェア">ソフトウェア</option>
+    <option value="事務用品">事務用品</option>
+    <option value="電化製品">電化製品</option>
+    <option value="家具">家具</option>
+    <option value="書籍">書籍</option>
+    <option value="消耗品">消耗品</option>
+    <option value="その他">その他</option>
+  </select>
+</div>
 
-<br />
-登録日 <input type="button" name="regist_date" value = "入力する" id = 'p_exist'>
-<input type="button" name="regist_nodate" value = "入力を取り消す" id = 'p_noexist'>
+<div class="form-group">
+  利用者
+  <select class="form-control" style="width:200px;" name="owner">
+    {% for users in user_list %}
+    <option value={{users.user_name}}>{{users.user_name}}</option>
+    {% endfor %}
+  </select>
+</div>
 
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+</style>
 
-<select name="pur_year" id="id_year">
+<div class="form-group"> 
+<div class="btn-group btn-group-xs" role="group" aria-label="date">
+<input type="button" class="btn tgle"  name="regist_date" value="入力する" id='p_exist'>
+<input type="button" class="btn tgle" name="regist_nodate" value="取り消す" id='p_noexist'>
+</div>
+登録日
+<select name="pur_year" class="tgle" id="id_year">
 </select>
 年
-<select name="pur_month" id="id_month">
+<select name="pur_month" class="tgle" id="id_month">
 </select>
 月
-<br />
+</div>
+
 {% if page_title != "(廃棄)" %}
-廃棄日 
-<input type="button" name="disposal_date" value = "入力する" id = 'd_exist'>
-<input type="button" name="disposal_nodate" value = "入力を取り消す" id = 'd_noexist'>
-<select name="dip_year" id="id2_year">
-</select>
-年
-<select name="dip_mounth" id="id2_month">
-</select>
-月
-
-<br />
+  <div class="form-group">
+    <div class="btn-group btn-group-xs" role="group" aria-label="date"> 
+      <input type="button" class="btn tgle" name="disposal_date" value = "入力する" id = 'd_exist'>
+      <input type="button" class="btn tgle" name="disposal_nodate" value = "取り消す" id = 'd_noexist'>
+    </div>
+    廃棄日
+    <select name="dip_year" class="tgle" id="id2_year">
+    </select>
+    年
+    <select name="dip_mounth" class="tgle" id="id2_month">
+    </select>
+    月
+  </div>
 {% endif %}
 
-
-<input type="submit" value="検索">
+  <div class="form-group">
+    <input type="submit" class="btn tgle"value="検索">
+  </div>
 
 </form>
 {%load static%}
@@ -90,8 +110,7 @@ function myEnter(flag) {
 }
 
 </script>
-</body>
-</html>
+{% endblock content %}
 
 
 
