@@ -21,7 +21,7 @@
   {% for users in user %}
   <tr>
     <td><input type="checkbox" name="delete_users" value="{{users.user_id}}"></td>
-    <td>{{users.user_name}}</td>
+    <td id="del_name">{{users.user_name}}</td>
   </tr>
   {% endfor %}
   </tbody>
@@ -41,9 +41,44 @@
 </style>
 
 <div class="form-group">
-  <input type="submit" class="btn tgle" value="削除">
+  <input class="btn tgle" type="button" data-toggle="modal" data-target='#myModal' value="確認" id="check">
   <input type="button" class="btn tgle" value="戻る" onclick="location.href='{% url 'menu'%}'">
 </div>
 </form>
+
+<!-- モーダルウィンドウの中身 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">削除対象を確認してください</h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="eq_name" class="control-label">削除対象</label>
+        <table class="table">
+        <thead id="dis-table">
+        </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <input class="btn tgle" type="submit" id="regist" value="削除">
+        <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#check').on('click', function(){
+    $('[name="delete_users"]:checked').each(function() {
+      var dis_user = $(this).parent().parent().find('#del_name').text();
+      $('#dis-table').append('<tr><td>'+dis_user+'</td></tr>');
+    });
+  });
+  $('#clear').on('click', function() {
+    $('#dis-table').empty();
+  });
+</script>
 
 {% endblock content%}

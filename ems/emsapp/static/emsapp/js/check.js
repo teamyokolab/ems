@@ -9,3 +9,4 @@ function blankCheck(id) {
 	console.log('not blank '+$('#'+id).val()+' finish');
   }
 }
+
