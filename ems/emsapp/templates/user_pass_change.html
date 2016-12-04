@@ -1,17 +1,42 @@
-<html>
-<body>
-  <h1>パスワード変更</h1>
-  <form action="{% url 'user_pass_comp'%}" method="post">
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>パスワード変更</h1>
+</div>
+<form action="{% url 'user_pass_comp'%}" method="post">
   {% csrf_token %}
-  ユーザ
-  <select name="user_name">
-  {% for users in user_list %}
-  <option value="{{users.user_name}}">{{users.user_name}}</option>
-  {% endfor %}
-  </select>
-  <br />
-  新規パスワード入力: <input type="text" name="new_pass"> <br />
-  新規パスワード再入力: <input type="text" name="re_input_pass"><br />
-  <input type="submit" value="登録">
-</body>
-</html>
+  <div class="form-group">
+    <label for="user_name" class="control-label">ユーザ</label>
+    <select class="form-control" name="user_name">
+    {% for users in user_list %}
+    <option value="{{users.user_name}}">{{users.user_name}}</option>
+    {% endfor %}
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="new_pass" class="control-label">新規パスワード入力</label>
+    <input type="text" class="form-control" name="new_pass">
+  </div>
+  <div class="form-group">
+    <label for="re_input_pass" class="control-label">新規パスワード再入力</label> 
+    <input type="text" class="form-control" name="re_input_pass">
+  </div>
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+
+  <input type="submit" class="btn tgle" value="登録">
+</form>
+{% endblock content%}

@@ -1,27 +1,52 @@
-<html>
-<head>
-{%load static%}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-</head>
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+{% load static %}
+<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
 
-<body>
+<div class="page-header">
+<h1>検索結果</h1>
+</div>
 
 <form action="{% url next_page %}" method="post">
-{% csrf_token %}
-<ul>
-<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+  {% csrf_token %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th></th>
+        <th>物品名</th>
+	{% if flag == 1 %}
+        <th>廃棄年</th>
+        <th>廃棄月</th>
+        <th>廃棄日</th>
+	{% endif %}
+        {% if flag != 1 %}
+        <th>廃棄日</th>
+        {% endif %}
+  </tr>
+  </thead>
+  <tbody>
   {% for eq in equipments %}
-    <li><input type="checkbox" name="eq_list" id = "{{eq.eq_id}}" value="{{eq.eq_id}}"/>{{eq.eq_name}}
+    <tr>
+    <th><input type="checkbox" name="eq_list" id = "{{eq.eq_id}}" value="{{eq.eq_id}}"/></th>
+    <td>{{eq.eq_name}}</td>
     {% if flag == 1 %}
-    <select name="year{{ eq.eq_id }}" class="date" id="year{{ eq.eq_id }}">
-    </select>
-    年
-    <select name="month{{ eq.eq_id }}" class="date" id="month{{ eq.eq_id }}">
-    </select>
-    月
-    <select name="day{{ eq.eq_id }}" class="date" id="day{{ eq.eq_id }}">
-    </select>
-    日
+    <td>
+      <select name="year{{ eq.eq_id }}" class="date" id="year{{ eq.eq_id }}">
+      </select>
+      年
+    </td>
+    <td>
+      <select name="month{{ eq.eq_id }}" class="date" id="month{{ eq.eq_id }}">
+      </select>
+      月
+    </td>
+    <td>
+      <select name="day{{ eq.eq_id }}" class="date" id="day{{ eq.eq_id }}">
+      </select>
+      日
+    </td>
     <script>
     $('.date').prop('disabled', true);
     $('input[type="checkbox"]').click(function(){
@@ -41,16 +66,27 @@
     optionLoop(1, 31, 'day{{ eq.eq_id }}', this_day); 
     </script>
     {% endif %}
-  </li>
+    {% if flag != 1 %}
+    <td>{{eq.disposal_date}}</td>
+    {% endif %}
   {% endfor %}
-</ul>
-<input type="submit" value="決定">
+</table>
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+
+<input type="submit" class="btn tgle" value="決定">
+<input type="button" class="btn tgle" value="戻る" onclick="location.href='{% url 'menu'%}'">
 </form>
 
-<a href="{% url 'menu' %}">戻る</a>
 
-<script>
-
-</script>
-</body>
-</html>
+{% endblock content %}
