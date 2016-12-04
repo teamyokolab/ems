@@ -67,10 +67,15 @@ def user_regist_comp(request):
 	password = request.POST['user_password']
 	authority = request.POST['authority']
 	account = Account()
-	account.create_user(name, password, authority)
-	return render(request, 'comp.html', {
-		'authority' : request.session['user_authority']
-	})
+	result = account.create_user(name, password, authority)
+	if result == True:
+		return render(request, 'comp.html', {
+			'authority' : request.session['user_authority']
+		})
+	else:
+		return render(request, 'error.html', {
+			'page' : 'menu'
+		})
 
 #ユーザ一覧画面
 def user_list(request):
@@ -276,6 +281,7 @@ def eq_disposal_list(request):
 		'equipments':equipments, 
 		'flag' : 1,
 		'next_page' : 'eq_disposal_comp',
+		'action' : '廃棄',
 		'authority' : request.session['user_authority']
 	})
 #備品廃棄完了画面
@@ -323,6 +329,7 @@ def eq_restore_list(request):
 		'equipments' : equipments,
 		'flag' : 0,
 		'next_page' : 'eq_restore_comp',
+		'action' : '復元',
 		'authority' : request.session['user_authority']
 	})
 

@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from . models import User
 from django.db.models import Q
+from django.db import IntegrityError
 class Account:
 	#login認証処理	
 	def login(name, password):
@@ -30,9 +31,13 @@ class Account:
 			return False
 
 	def create_user(self, name, password, authority):
-		user = User(user_name=name, user_password=password, user_authority=authority, delete_flag=0)
-		user.save()
-
+		try: 
+			user = User(user_name=name, user_password=password, user_authority=authority, delete_flag=0)
+			user.save()
+			return True
+		except IntegrityError:
+			return False		
+	
 	# user_list を返す関数
 	def get_user_list(authority, name):
 		if authority == 2 or authority == 3:
