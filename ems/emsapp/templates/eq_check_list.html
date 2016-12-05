@@ -66,9 +66,14 @@
     optionLoop(1, 31, 'day{{ eq.eq_id }}', this_day); 
     </script>
     {% endif %}
-    {% if flag != 1 %}
+    {% if flag = 0 %}
     <td>{{eq.disposal_date}}</td>
     {% endif %}
+
+    {% if flag = 2 %}
+    <td>{{eq.purchase_date}}</td>
+    {% endif %}
+  
   {% endfor %}
 </table>
 
@@ -105,7 +110,7 @@
 	</table>
       </div>
       <div class="modal-footer">
-        <input class="btn tgle" type="submit" id="regist" value="{{action}}">
+        <button class="btn tgle" id="regist" value="{{action}}" onclick="submit()">{{action}}</button>
         <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
       </div>
     </div>
@@ -121,13 +126,20 @@
       var day = $(this).parent().parent().find('#eq_day').find("select").val();
       var month = $(this).parent().parent().find('#eq_month').find("select").val();
       var year = $(this).parent().parent().find('#eq_year').find("select").val();
-      var dis_date = year+'年'+month+'月'+day+'日';
+      if(year != undefined){
+          var dis_date = year+'年'+month+'月'+day+'日';
+      }else{
+          var dis_date = "";
+      }
       $('#dis-table').append('<tr><td>'+dis_eq+'</td><td>'+dis_date+'</td></tr>');
     });
   });
   $('#clear').on('click', function() {
     $('#dis-table').empty();
   });
+  function submit() {
+    $('form').submit();
+  }
 </script>
 
 {% endblock content %}
