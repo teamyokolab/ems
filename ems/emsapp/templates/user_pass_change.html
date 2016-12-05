@@ -10,7 +10,7 @@
   {% csrf_token %}
   <div class="form-group">
     <label for="user_name" class="control-label">ユーザ</label>
-    <select class="form-control" name="user_name">
+    <select class="form-control" name="user_name" id="user_name">
     {% for users in user_list %}
     <option value="{{users.user_name}}">{{users.user_name}}</option>
     {% endfor %}
@@ -18,11 +18,11 @@
   </div>
   <div class="form-group">
     <label for="new_pass" class="control-label">新規パスワード入力</label>
-    <input type="text" class="form-control" name="new_pass">
+    <input type="text" class="form-control" name="new_pass" id="new_pass">
   </div>
   <div class="form-group">
     <label for="re_input_pass" class="control-label">新規パスワード再入力</label> 
-    <input type="text" class="form-control" name="re_input_pass">
+    <input type="text" class="form-control" name="re_input_pass" id="re_pass">
   </div>
 
 <style>
@@ -37,6 +37,74 @@
 }
 </style>
 
-  <input type="submit" class="btn tgle" value="登録">
+<div class="form-group">
+  <input class="btn tgle" type="button" data-toggle="modal" data-target='#myModal' value="確認" id="check">
+  <input class="btn tgle" type="button" value="戻る" onclick="location.href='{% url 'menu'%}'">
+</div>
+
 </form>
+
+<!-- モーダルウィンドウの中身 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">変更内容を確認してください</h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="regist-eser-name" class="control-label">ユーザ名</label>
+        <div id="regist-user-name">
+        </div>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="regist-password" class="control-label">パスワード</label>
+        <div id="regist-password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn tgle" type="button" onclick="submit();" id="regist" value="変更">変更</button>
+        <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $('#check').on('click', function(){
+    var user_name = $('#user_name').val();
+    console.log(user_name);
+    var new_password = $('#new_pass').val();
+    var re_password = $('#re_pass').val();
+    var pass_message = 'パスワードは表示されません';
+    if(new_password.match(/^[ 　\r\n\t]*$/)) {
+      $('#regist').prop('disabled', true);
+      pass_message = 'パスワードを入力してください';
+    }
+    if(new_password.match(/[^0-9A-Za-z]+/)) {
+      $('#regist').prop('disabled', true);
+      pass_message = '半角英数字で入力してください';
+    }
+    if(new_password.length < 8 || new_password.length > 32) {
+       $('#regist').prop('disabled', true);
+       pass_message = 'パスワードの長さを確認してください';
+    }
+    if(new_password != re_password) {
+      $('#regist').prop('disabled', true);
+      pass_message = 'パスワードが一致しません';
+    }
+    $('#regist-user-name').append('<h4>'+user_name+'</h4>');
+    $('#regist-password').append('<h4>'+pass_message+'</h4>');
+  });
+  $('#clear').on('click', function(){
+    $('#regist-user-name').empty();
+    $('#regist-password').empty();
+    $('#regist').prop('disabled', false);
+  });
+  function submit() {
+    $('form').submit();
+  }
+</script>
+
+
 {% endblock content%}
