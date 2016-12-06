@@ -29,7 +29,7 @@
             <li class=""><a href="{%url 'eq_restore_search'%}">廃棄備品復元</a></li>
 	    {% ifequal authority 2 %}
             <li><a href="">CSV入力</a></li>
-            <li><a href="">CSV出力</a></li>
+            <li><a href="{%url 'csv_search'%}">CSV出力</a></li>
             {% endifequal %}
 	  {% endif %}
 	  {% ifequal authority 3%}

@@ -28,4 +28,7 @@ urlpatterns = [
 	url(r'eq_restore_comp/$', views.eq_restore_comp, name='eq_restore_comp'),
 	url(r'eq_regist/$', views.eq_regist, name='eq_regist'),
 	url(r'eq_comp/$', views.eq_regist_comp, name='eq_comp'),
+	url(r'csv_search/$', views.csv_search, name='csv_search'),
+	url(r'csv_list/$', views.csv_list, name='csv_list'),
+	url(r'csv_output/$', views.csv_output, name='csv_output'),
 ]
