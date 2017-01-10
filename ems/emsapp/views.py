@@ -1,3 +1,5 @@
+import csv
+from django.http import HttpResponse
 from django.shortcuts import render
 from . account import Account
 from . models import User
@@ -267,7 +269,8 @@ def eq_disposal_search(request):
 		'user_list': users,
 		'page_title': '(廃棄)',
 		'next_page' : 'eq_disposal_list',
-		'authority' : request.session['user_authority']
+		'authority' : request.session['user_authority'],
+		'flag' : 0
 	})
 
 #備品廃棄用検索結果表示
@@ -315,7 +318,8 @@ def eq_restore_search(request):
 		'user_list': users,
 		'page_title': '(復元)',
 		'next_page' : 'eq_restore_list',
-		'authority' : request.session['user_authority']				
+		'authority' : request.session['user_authority'],
+		'flag' : 1			
 	})
 
 #備品復元用検索結果画面
@@ -344,6 +348,67 @@ def eq_restore_comp(request):
 	return render(request, 'comp.html', {
 		'authority' : request.session['user_authority']
 	})
+
+
+#csv備品検索画面
+def csv_search(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})			
+	users = Account.get_user_list(request.session['user_authority'], request.session['user_name'])
+	return render(request,'eq_search.html',{
+		'user_list': users,
+		'page_title': '(csv出力)',
+		'next_page' : 'csv_list',
+		'authority' : request.session['user_authority'],
+		'flag' : 0
+	})
+
+
+#csv検索結果画面
+def csv_list(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+			'page' : 'index'
+		})
+	equipments = Search.search(request, 0)
+	return render(request,'eq_check_list.html', {
+		'equipments' : equipments,
+		'flag' : 2,
+		'next_page' : 'csv_output',
+		'action' : 'csv出力',
+		'authority' : request.session['user_authority']
+	})
+
+#csvoutput
+
+def csv_output(request):
+	if Account.login_check(request) == False:
+		return render(request, 'error.html', {
+				'page' : 'index'
+		})
+	outdata=HttpResponse(content_type='text/csv')
+	outdata['Content-Disposition']='attachment; filename="eqlist.csv"'
+	writer=csv.writer(outdata)
+	eq_list = request.POST.getlist('eq_list')
+
+	for id in eq_list:
+	       rowList = []
+	       eq = Equipment.objects.get(eq_id=id)
+	       rowList.append(eq.eq_name)
+	       rowList.append(eq.eq_category)
+	       rowList.append(eq.owner_user)
+	       rowList.append(eq.purchase_date)
+	       rowList.append(eq.disposal_date)
+	       writer.writerow(rowList)
+	if outdata == None:
+               return render(request, 'error.html', {
+				'page' : 'index'
+	       })	
+	else:
+               return outdata
+
 
 #ログアウト
 def logout(request):
