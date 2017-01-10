@@ -9,7 +9,7 @@
 <h1>検索結果</h1>
 </div>
 
-<form action="{% url next_page %}" method="post">
+<form id="form"  action="{% url next_page %}" method="post">
   {% csrf_token %}
   <table class="table table-hover">
     <thead>
@@ -66,11 +66,11 @@
     optionLoop(1, 31, 'day{{ eq.eq_id }}', this_day); 
     </script>
     {% endif %}
-    {% if flag = 0 %}
-    <td>{{eq.disposal_date}}</td>
+    {% if flag == 0 %}
+    <td id="eq_disposal_date">{{eq.disposal_date}}</td>
     {% endif %}
 
-    {% if flag = 2 %}
+    {% if flag == 2 %}
     <td>{{eq.purchase_date}}</td>
     {% endif %}
   
@@ -110,7 +110,7 @@
 	</table>
       </div>
       <div class="modal-footer">
-        <button class="btn tgle" id="regist" value="{{action}}" onclick="submit()">{{action}}</button>
+        <input type="submit" class="btn tgle" id="regist" value="{{action}}">
         <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
       </div>
     </div>
@@ -126,20 +126,25 @@
       var day = $(this).parent().parent().find('#eq_day').find("select").val();
       var month = $(this).parent().parent().find('#eq_month').find("select").val();
       var year = $(this).parent().parent().find('#eq_year').find("select").val();
-      if(year != undefined){
-          var dis_date = year+'年'+month+'月'+day+'日';
-      }else{
-          var dis_date = "";
-      }
-      $('#dis-table').append('<tr><td>'+dis_eq+'</td><td>'+dis_date+'</td></tr>');
+
+      if(day && month && year) {
+      	var dis_date = year+'年'+month+'月'+day+'日';
+        $('#dis-table').append('<tr><td>'+dis_eq+'</td><td>'+dis_date+'</td></tr>');
+      }	else {
+	var dis_date = $(this).parent().parent().find('#eq_disposal_date').text();;
+	$('#dis-table').append('<tr><td>'+dis_eq+'</td><td>'+dis_date+'</td></tr>');
+      }	
+
     });
   });
   $('#clear').on('click', function() {
     $('#dis-table').empty();
   });
-  function submit() {
-    $('form').submit();
-  }
+
+  $('#regist').on('click', function() {
+    $('#form').trigger('submit');
+  });
+
 </script>
 
 {% endblock content %}
