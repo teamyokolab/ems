@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+  <div class="page-header">
+    <h1>備品登録</h1>
+  </div>
+
+<style>
+  .addon {
+    background-color: #333; 
+    color: white;
+  }
+  .day {
+    background-color: white;
+    border: solid 1px #d8d8d8;
+  }
+  .tgle {
+    background-color: white;
+    border: solid 1px #d8d8d8;
+  }
+  .tgle:hover {
+    background-color: #333;
+    color: white;
+  }
+</style>
+
+  <form action="{% url 'eq_comp'%}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="eq_name" class="control-label">備品名</label>  
+    <input type="text" class="form-control" placeholder="備品名" aria-describedby="sizing-addon2" name="eq_name" id="eq_name" required>
+  </div>
+
+  <div class="form-group">
+      <label for="category" class="control-label">種別</label> 
+      <select class="form-control" name="category" id="category">
+        <option value="PC">PC</option>
+        <option value="周辺機器">周辺機器</option>
+        <option value="ソフトウェア">ソフトウェア</option>
+        <option value="事務用品">事務用品</option>
+        <option value="電化製品">電化製品</option>
+        <option value="家具">家具</option>
+        <option value="書籍">書籍</option>
+        <option value="消耗品">消耗品</option>
+        <option value="その他">その他</option>
+      </select>
+  </div>
+
+  <div class="form-group">
+    <label for="owner" class="control-label">利用者</label>  
+    <select class="form-control" name="owner" id="owner">
+      {% for users in user_list %}
+      <option value="{{users.user_name}}">{{users.user_name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="date" class="control-label">登録日</label>
+    <select class="day" name="year" id="id_year"></select>年
+    <select class="day" name="month" id="id_month"></select>月
+    <select class="day" name="day" id="id_day"></select>日
+  </div>
+  
+  <div class="form-group">
+    <input class="btn tgle" type="button" data-toggle="modal" data-target='#myModal' value="確認" id="check">
+  </div>
+
+<!-- モーダルウィンドウの中身 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">登録内容を確認してください</h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+	<label for="eq_name" class="control-label">備品名</label>
+        <div id="regist-eq-name">
+ 	</div>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="category" class="control-label">種別</label>
+        <div id="regist-eq-category">
+        </div>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="owner" class="control-label">利用者</label>
+        <div id="regist-eq-owner">
+        </div>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="date" class="control-label">登録日</label>
+        <div id="regist-eq-date">
+        </div>
+      </div>
+      <div class="modal-footer">
+	<input class="btn tgle" type="submit" id="regist" value="登録">
+        <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  {% load static %}
+  <script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+  <script type="text/javascript" src={% static 'emsapp/js/check.js' %}></script>
+  <script>
+  optionLoop(2005,  this_year, 'id_year', this_year);
+  optionLoop(1, 12, 'id_month', this_month);
+  optionLoop(1, 31, 'id_day', this_day);
+  $('#check').on('click', function(){
+    var eq_name = $('#eq_name').val();
+    var category = $('#category').val();
+    var owner = $('#owner').val();
+    var regist_date = $('#id_year').val()+'年'+$('#id_month').val()+'月'+$('#id_day').val()+'日';
+    if($('#eq_name').val().match(/^[ 　\r\n\t]*$/)) {
+      $('#regist').prop('disabled', true);
+      eq_name = '備品名を入力してください';
+    }
+    $('#regist-eq-name').append('<h4>'+eq_name+'</h4>');
+    $('#regist-eq-category').append('<h4>'+category+'</h4>');
+    $('#regist-eq-owner').append('<h4>'+owner+'</h4>');
+    $('#regist-eq-date').append('<h4>'+regist_date+'</h4>');  
+  });
+  $('#clear').on('click', function(){
+    $('#regist-eq-name').empty();
+    $('#regist-eq-category').empty();
+    $('#regist-eq-owner').empty();
+    $('#regist-eq-date').empty();
+    $('#regist').prop('disabled', false);
+  });
+  </script>
+{% endblock content %}

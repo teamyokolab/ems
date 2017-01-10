@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>復元ユーザ選択</h1>
+</div>
+
+<form action="{% url 'user_restore_comp' %}" method="post">
+{% csrf_token %}
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>ユーザ名</th>
+  </tr>
+  </thead>
+  <tbody>  
+  {% for restore_users in users %}
+  <tr>
+    <td><input type="checkbox" name="restore_users" value="{{restore_users.user_id}}"></td>
+    <td id="res_name">{{restore_users.user_name}}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+
+<div class="form-group">
+  <input class="btn tgle" type="button" data-toggle="modal" data-target='#myModal' value="確認" id="check">
+  <input type="button" class="btn tgle" value="戻る" onclick="location.href='{% url 'menu'%}'">
+</div>
+</form>
+
+<!-- モーダルウィンドウの中身 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">復元対象を確認してください</h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="eq_name" class="control-label">復元対象</label>
+        <table class="table">
+        <thead id="res-table">
+        </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <input class="btn tgle" type="submit" id="regist" value="復元">
+        <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#check').on('click', function(){
+    $('[name="restore_users"]:checked').each(function() {
+      var res_user = $(this).parent().parent().find('#res_name').text();
+      $('#res-table').append('<tr><td>'+res_user+'</td></tr>');
+    });
+  });
+  $('#clear').on('click', function() {
+    $('#res-table').empty();
+  });
+</script>
+
+{% endblock content %}

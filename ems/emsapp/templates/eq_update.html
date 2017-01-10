@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>備品情報更新</h1>
+</div>
+
+<form action="{% url 'eq_update_comp' %}" method="post">
+{% csrf_token %}
+  <div class="form-group">
+    <label for="eq_name" class="control-label">備品名</label>
+    <input type="text" class="form-control" name="name" value="{{equipment.eq_name}}" id="eq_name">
+  </div>
+   <div class="form-group">
+      <label for="category" class="control-label">種別</label> 
+      <select class="form-control" name="category" id="category">
+	<option value={{category}}>{{category}}</option>
+	{% for categorys in categorys%}
+	<option value={{categorys}}>{{categorys}}</option>
+	{% endfor %}
+      </select>
+  </div>
+   <div class="form-group">
+      <label for="owner" class="control-label">利用者</label> 
+      <select class="form-control" name="owner" id="owner">
+	<option value="{{equipment.owner_user}}">{{equipment.owner_user}}</option>
+	{% for users in users %}
+	<option value="{{users.user_name}}">{{users.user_name}}</option>
+	{% endfor %}
+      </select>
+  </div>
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+
+<input type="hidden" name="update_id" value={{equipment.eq_id}}>
+<input class="btn tgle" type="button" data-toggle="modal" data-target='#myModal' value="確認" id="check">
+<input type="button" class="btn tgle" value="メニューへ戻る" onclick="location.href='{%url 'menu'%}'">
+</form>
+
+<!-- モーダルウィンドウの中身 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">登録内容を確認してください</h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="eq_name" class="control-label">備品名</label>
+        <div id="regist-eq-name">
+        </div>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="category" class="control-label">種別</label>
+        <div id="regist-eq-category">
+        </div>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="owner" class="control-label">利用者</label>
+        <div id="regist-eq-owner">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input class="btn tgle" type="submit" id="regist" value="更新">
+        <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  {% load static %}
+  <script>
+  $('#check').on('click', function(){
+    var eq_name = $('#eq_name').val();
+    var category = $('#category').val();
+    var owner = $('#owner').val();
+    var regist_date = $('#id_year').val()+'年'+$('#id_month').val()+'月'+$('#id_day').val()+'日';
+    if($('#eq_name').val().match(/^[ 　\r\n\t]*$/)) {
+      $('#regist').prop('disabled', true);
+      eq_name = '備品名を入力してください';
+    }
+    $('#regist-eq-name').append('<h4>'+eq_name+'</h4>');
+    $('#regist-eq-category').append('<h4>'+category+'</h4>');
+    $('#regist-eq-owner').append('<h4>'+owner+'</h4>');
+  });
+  $('#clear').on('click', function(){
+    $('#regist-eq-name').empty();
+    $('#regist-eq-category').empty();
+    $('#regist-eq-owner').empty();
+    $('#regist-eq-date').empty();
+  });
+  </script>
+
+{% endblock content %}

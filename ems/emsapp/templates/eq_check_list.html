@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+{% load static %}
+<script type="text/javascript" src={% static 'emsapp/js/timepull.js' %}></script>
+
+<div class="page-header">
+<h1>検索結果</h1>
+</div>
+
+<form id="form"  action="{% url next_page %}" method="post">
+  {% csrf_token %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th></th>
+        <th>物品名</th>
+	{% if flag == 1 %}
+        <th>廃棄年</th>
+        <th>廃棄月</th>
+        <th>廃棄日</th>
+	{% endif %}
+        {% if flag != 1 %}
+        <th>廃棄日</th>
+        {% endif %}
+  </tr>
+  </thead>
+  <tbody>
+  {% for eq in equipments %}
+    <tr>
+    <td><input type="checkbox" name="eq_list" id="{{eq.eq_id}}" value="{{eq.eq_id}}"/></td>
+    <td id="eq_name">{{eq.eq_name}}</td>
+    {% if flag == 1 %}
+    <td id="eq_year">
+      <select name="year{{ eq.eq_id }}" class="date" id="year{{ eq.eq_id }}">
+      </select>
+      年
+    </td>
+    <td id="eq_month">
+      <select name="month{{ eq.eq_id }}" class="date" id="month{{ eq.eq_id }}">
+      </select>
+      月
+    </td>
+    <td id="eq_day">
+      <select name="day{{ eq.eq_id }}" class="date" id="day{{ eq.eq_id }}">
+      </select>
+      日
+    </td>
+    <script>
+    $('.date').prop('disabled', true);
+    $('input[type="checkbox"]').click(function(){
+	var id = $(this).attr('id');
+	if($(this).is(':checked')){
+	  $('#year'+id).prop('disabled', false);
+	  $('#month'+id).prop('disabled', false);
+	  $('#day'+id).prop('disabled', false);
+	} else {
+	  $('#year'+id).prop('disabled', true);
+          $('#month'+id).prop('disabled', true);
+          $('#day'+id).prop('disabled', true);
+	}
+    });
+    optionLoop(2005, this_year, 'year{{ eq.eq_id }}', this_year);
+    optionLoop(1, 12, 'month{{ eq.eq_id }}', this_month);
+    optionLoop(1, 31, 'day{{ eq.eq_id }}', this_day); 
+    </script>
+    {% endif %}
+    {% if flag != 1 %}
+    <td id="eq_disposal_date">{{eq.disposal_date}}</td>
+    {% endif %}
+  {% endfor %}
+</table>
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+<div class="form-group">
+<input class="btn tgle" type="button" data-toggle="modal" data-target='#myModal' value="確認" id="check">
+<input type="button" class="btn tgle" value="戻る" onclick="location.href='{% url 'menu'%}'">
+</div>
+</form>
+
+<!-- モーダルウィンドウの中身 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{action}}対象を確認してください</h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+        <label for="eq_name" class="control-label">{{action}}対象</label>
+        <table class="table">
+	<tbody id="dis-table">
+	</tbody>
+	</table>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class="btn tgle" id="regist" value="{{action}}">
+        <button type="button" class="btn tgle" data-dismiss="modal" id="clear">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  {% load static %}
+<script>
+  $('#check').on('click', function(){
+    var text = [];
+    $('[name="eq_list"]:checked').each(function() {
+      var dis_eq = $(this).parent().parent().find('#eq_name').text();
+      var day = $(this).parent().parent().find('#eq_day').find("select").val();
+      var month = $(this).parent().parent().find('#eq_month').find("select").val();
+      var year = $(this).parent().parent().find('#eq_year').find("select").val();
+      if(day && month && year) {
+      	var dis_date = year+'年'+month+'月'+day+'日';
+        $('#dis-table').append('<tr><td>'+dis_eq+'</td><td>'+dis_date+'</td></tr>');
+      }	else {
+	var dis_date = $(this).parent().parent().find('#eq_disposal_date').text();;
+	$('#dis-table').append('<tr><td>'+dis_eq+'</td><td>'+dis_date+'</td></tr>');
+      }	
+    });
+  });
+  $('#clear').on('click', function() {
+    $('#dis-table').empty();
+  });
+  $('#regist').on('click', function() {
+    $('#form').trigger('submit');
+  });
+</script>
+
+{% endblock content %}
