@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+<div class="page-header">
+<h1>CSV出力</h1>
+</div>
+
+<form action=""method="POST">
+{% csrf_token %}
+
+<style>
+.tgle {
+  background-color: white;
+  border: solid 1px #d8d8d8;
+}
+
+.tgle:hover {
+  background-color: #333333;
+  color: white;
+}
+</style>
+<input type="button" class="btn tgle" value="戻る" onclick="location.href='{% url 'menu'%}'">
+<!--
+<input type="button" class="btn tgle" value="出力" onclick="location.href='{%url 'eq_search'%}'">
+-->
+{% endblock content %}
