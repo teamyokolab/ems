@@ -7,7 +7,7 @@
 <h1>備品情報更新</h1>
 </div>
 
-<form action="{% url 'eq_update_comp' %}" method="post">
+<form id="form" action="{% url 'eq_update_comp' %}" method="post">
 {% csrf_token %}
   <div class="form-group">
     <label for="eq_name" class="control-label">備品名</label>
@@ -100,6 +100,9 @@
     $('#regist-eq-category').empty();
     $('#regist-eq-owner').empty();
     $('#regist-eq-date').empty();
+  });
+  $('#regist').on('click', function() {
+    $('#form').submit();
   });
   </script>
 
